@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "neuro-meeglet"
+  site-url: "https://Roche.github.io/neuro-meeglet"
+  description: "Morlet Wavelets for M/EEG analysis"
+  repo-branch: main
+  repo-url: "https://github.com/Roche/neuro-meeglet"

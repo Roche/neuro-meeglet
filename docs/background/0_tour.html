@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Denis Engemann">
+<meta name="author" content="Jörg Hipp">
+<meta name="author" content="Joseph Paillard">
+<meta name="author" content="Pilar Garces">
+<meta name="author" content="David Hawellek">
+
+<title>neuro-meeglet - Onboarding</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="neuro-meeglet - Onboarding">
+<meta property="og:description" content="Morlet Wavelets for M/EEG analysis">
+<meta property="og:site_name" content="neuro-meeglet">
+<meta name="twitter:title" content="neuro-meeglet - Onboarding">
+<meta name="twitter:description" content="Morlet Wavelets for M/EEG analysis">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">neuro-meeglet</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/Roche/neuro-meeglet"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../background/index.html">Background</a></li><li class="breadcrumb-item"><a href="../background/0_tour.html">Onboarding</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MEEGLET</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../background/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Background</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../background/0_tour.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Onboarding</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../background/1_background_wavelets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematical Deep Dive</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../tutorials/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python tutorials</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/plot_eeg_covariance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EEG covariance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/plot_eeg_power.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EEG power</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/plot_wavelets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Define Wavelets</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../api/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python API</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../api/wavelets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Morlet Wavelets for M/EEG</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../matlab/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MATLAB</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../matlab/matlab_functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MATLAB functionality</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#power-spectral-density-in-units-of-µv²oct" id="toc-power-spectral-density-in-units-of-µv²oct" class="nav-link active" data-scroll-target="#power-spectral-density-in-units-of-µv²oct">Power spectral density in units of µV²/oct</a></li>
+  <li><a href="#key-features-of-this-morlet-wavelet-implementation" id="toc-key-features-of-this-morlet-wavelet-implementation" class="nav-link" data-scroll-target="#key-features-of-this-morlet-wavelet-implementation">Key features of this Morlet wavelet implementation</a></li>
+  <li><a href="#overview-on-implemented-meeg-spectral-metrics" id="toc-overview-on-implemented-meeg-spectral-metrics" class="nav-link" data-scroll-target="#overview-on-implemented-meeg-spectral-metrics">Overview on implemented M/EEG spectral metrics</a>
+  <ul>
+  <li><a href="#power-measures" id="toc-power-measures" class="nav-link" data-scroll-target="#power-measures">Power measures</a></li>
+  <li><a href="#measures-of-phase-interaction-mixed-coherence-type" id="toc-measures-of-phase-interaction-mixed-coherence-type" class="nav-link" data-scroll-target="#measures-of-phase-interaction-mixed-coherence-type">Measures of phase interaction (mixed, coherence type)</a></li>
+  <li><a href="#more-specific-measures-of-phase-interaction" id="toc-more-specific-measures-of-phase-interaction" class="nav-link" data-scroll-target="#more-specific-measures-of-phase-interaction">More specific measures of phase interaction</a></li>
+  <li><a href="#power-envelope-correlations" id="toc-power-envelope-correlations" class="nav-link" data-scroll-target="#power-envelope-correlations">Power envelope correlations</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Roche/neuro-meeglet/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../background/index.html">Background</a></li><li class="breadcrumb-item"><a href="../background/0_tour.html">Onboarding</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Onboarding</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-contents">
+             <p>Denis Engemann </p>
+             <p>Jörg Hipp </p>
+             <p>Joseph Paillard </p>
+             <p>Pilar Garces </p>
+             <p>David Hawellek </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>Morlet wavelets designed for power-spectral analysis of M/EEG</p>
+</blockquote>
+<p>Analysis of M/EEG signals in the frequency domain is widely used and has proven useful in various applications. This is due to a key contribution of periodic processes to electrophysiological signals, which are well represented in the frequency domain. Electrophysiological signals (as many other naturally occurring signals) show a <em>log-frequency behavior</em>, i.e., the magnitude and spectral width of oscillatory signals scale logarithmically rather than linearly with frequency <span class="citation" data-cites="buzsaki2014log">(<a href="#ref-buzsaki2014log" role="doc-biblioref">Buzsáki and Mizuseki 2014</a>)</span>. The commonly used Fourier transform is optimal for signals with a linear frequency behavior. Frequency transformations that account for <em>log-frequency behavior</em> may be better suited for electrophysiological signals. Morlet wavelets <span class="citation" data-cites="morlet_wave_1982">(<a href="#ref-morlet_wave_1982" role="doc-biblioref">Morlet et al. 1982</a>)</span> that extend Gabor Wavelets <span class="citation" data-cites="gabor1946theory">(<a href="#ref-gabor1946theory" role="doc-biblioref">Gabor 1946</a>)</span> into families of wavelets are widely used for time-frequency analyses in M/EEG <span class="citation" data-cites="tallon1996stimulus">(<a href="#ref-tallon1996stimulus" role="doc-biblioref">Tallon-Baudry et al. 1996</a>)</span>, can be used to this end.</p>
+<p>This package provides a lean implementation of Morlet wavelets using a frequency-domain parametrization initially developed to facilitate the spectral analysis of M/EEG resting-state signals <span class="citation" data-cites="hipp2012large">(<a href="#ref-hipp2012large" role="doc-biblioref">Hipp et al. 2012</a>)</span>. The package derives besides spectral power also the covariance matrix and several other bi-variate and summary measures (coherence, imaginary coherence, phase-locking value, phase-lag index, de-biased weighted phase-lag index, power correlations, orthogonalized power correlations) and the global interaction measure. These representations can be used for exploration and for further statistical analyses of M/EEG signals (e.g.&nbsp;for cluster permutation statistics or as features for machine learning).</p>
+<section id="power-spectral-density-in-units-of-µv²oct" class="level2">
+<h2 class="anchored" data-anchor-id="power-spectral-density-in-units-of-µv²oct">Power spectral density in units of µV²/oct</h2>
+<p>The implementation provides the power spectrum in units of <span class="math inline">\(µV^2/oct\)</span>. While this is an unusual normalization for power spectral density, it is a logical continuation embracing the logarithmic nature of electrophysiological signals and Jean Morlet’s work extending Gabor wavelets <span class="citation" data-cites="gabor1946theory">(<a href="#ref-gabor1946theory" role="doc-biblioref">Gabor 1946</a>)</span> into families of proportionial wavelets <span class="citation" data-cites="morlet_wave_1982">(<a href="#ref-morlet_wave_1982" role="doc-biblioref">Morlet et al. 1982</a>)</span>. It automatically leads to larger values at higher frequencies compared to the traditional <span class="math inline">\(µV^2/Hz\)</span> normalization, thereby accounting for lower amplitudes at higher frequencies.</p>
+<p>We therefore use a log-frequency grid with a wavelet design that increases spectral smoothing log-linearly with frequency. The implementation parameterizes spectral spacing and smoothing in units of <em>octaves</em> (<code>delta_oct</code> and <code>bw_oct</code>). We provide a python and a Matlab implementation. In the following we describe the python version.</p>
+<div id="0b9af2c4" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> meeglet</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> meeglet <span class="im">import</span> define_frequencies, define_wavelets</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>bw_oct <span class="op">=</span> <span class="fl">0.5</span> <span class="co"># half an octave of standard deviation around center frequency</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>delta_oct <span class="op">=</span> <span class="dv">1</span> <span class="co"># one octave spacing between frequencies of interest (foi)</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>foi, sigma_time, sigma_freq, bw_oct, qt <span class="op">=</span> define_frequencies(</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    foi_start<span class="op">=</span><span class="dv">1</span>, foi_end<span class="op">=</span><span class="dv">32</span>, delta_oct<span class="op">=</span>delta_oct, bw_oct<span class="op">=</span>bw_oct</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The first step prepares frequencies of interest, <code>foi</code>, for which Morlet wavelets are constructed.</p>
+<div id="69fd7d8b" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wavelets  <span class="op">=</span> define_wavelets(foi, sigma_time, sfreq<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="bu">len</span>(wavelets), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> <span class="bu">list</span>(<span class="bu">reversed</span>(axes))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.viridis(np.linspace(<span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="bu">len</span>(wavelets)))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ii, (w, <span class="op">*</span>_) <span class="kw">in</span> <span class="bu">enumerate</span>(wavelets):</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    w_range <span class="op">=</span> np.arange(<span class="bu">len</span>(w)) <span class="op">-</span> <span class="bu">len</span>(w)<span class="op">/</span><span class="dv">2</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    axes[ii].plot(w_range, w.real, color<span class="op">=</span>colors[ii])</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    axes[ii].plot(w_range, w.imag, color<span class="op">=</span>colors[ii], linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    axes[ii].set_title(<span class="ss">f'</span><span class="sc">{</span>foi[ii]<span class="sc">}</span><span class="ss"> Hz'</span>, y<span class="op">=</span><span class="fl">0.5</span>, x<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Time (ms)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>Text(0.5, 0, 'Time (ms)')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="0_tour_files/figure-html/cell-3-output-2.png" width="616" height="429" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The Morlet wavelets are widest in lower frequencies and shorter in higher frequencies. Note also that the <em>number of cycles</em> is constant across wavelets, which is in line with Jean Morlet’s original work <span class="citation" data-cites="morlet_wave_1982">(<a href="#ref-morlet_wave_1982" role="doc-biblioref">Morlet et al. 1982</a>)</span> as it is controlled by the <em>kernel width</em>.</p>
+<p>In addition, our Morlet wavelet family does not only have a log-linearly increasing spectral width and a log-linearly decreasing temporal width, but spacing between frequencies increases log-linearly, i.e., increasingly fewer wavelets are deployed at higher frequencies. The spectral distance between two wavelets, i.e.&nbsp;spacing, is expressed in <em>octaves</em>, hence, log-linear too. This is a natural choice and ensures efficient spectral sampling.</p>
+<div id="1416fcd1" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>delta_foi <span class="op">=</span> np.c_[</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="op">**</span> (np.log2(foi) <span class="op">-</span> delta_oct <span class="op">/</span> <span class="dv">2</span>), </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="op">**</span> (np.log2(foi) <span class="op">+</span> delta_oct <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plt.loglog(foi, sigma_freq, marker<span class="op">=</span><span class="st">'o'</span>, base<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="vs">r'$\sigma_f$'</span>, color<span class="op">=</span><span class="st">'orange'</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.loglog(foi, sigma_time, marker<span class="op">=</span><span class="st">'o'</span>, base<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="vs">r'$\sigma_t$'</span>, color<span class="op">=</span><span class="st">'steelblue'</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.loglog(delta_foi.T,  np.c_[sigma_freq, sigma_freq].T, color<span class="op">=</span><span class="st">'orange'</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>plt.loglog(delta_foi.T, np.c_[sigma_time, sigma_time].T, color<span class="op">=</span><span class="st">'steelblue'</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>plt.xticks(ticks<span class="op">=</span>foi, labels<span class="op">=</span>foi)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Frequency (Hz)'</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r'Bandwidth of Wavelet (temporal: $\sigma_t$, spectral: $\sigma_f$)'</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="0_tour_files/figure-html/cell-4-output-1.png" width="601" height="429" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="key-features-of-this-morlet-wavelet-implementation" class="level2">
+<h2 class="anchored" data-anchor-id="key-features-of-this-morlet-wavelet-implementation">Key features of this Morlet wavelet implementation</h2>
+<ul>
+<li>Focused on power-spectral analysis of resting-state EEG (not time-frequency analysis) and proven useful in past pharmacological research &amp; clinical applications.</li>
+<li>The log-linear parametrization in octaves enables intuitive reasoning about frequencies of interest.</li>
+<li>Helps avoid thinking in (<em>arbitrary</em>) frequency bands while expressing prior knowledge about log-linear scaling of brain structure and function <span class="citation" data-cites="buzsaki2014log">(<a href="#ref-buzsaki2014log" role="doc-biblioref">Buzsáki and Mizuseki 2014</a>)</span>.</li>
+<li>The main reason for using a frequency domain representation based on Morlet wavelets over widely used Fourier transform based approaches is that the Fourier transform implies a linear grid and constant spectral width and is therefore not optimal for log-frequency scaling of electrophysiological signals.</li>
+<li>A simple time-domain convolution is implemented, whereas other implementations use convolutions in the frequency domain for improved speed <span class="citation" data-cites="cohen2019better gramfort2013meg">(<a href="#ref-cohen2019better" role="doc-biblioref">Cohen 2019</a>; <a href="#ref-gramfort2013meg" role="doc-biblioref">Gramfort et al. 2013</a>)</span>. In our experience, computation tis are not an issue when using modern computers.</li>
+<li>As a consequence, our implementation makes ignoring bad segments labeled as missing (NaN) straight forward, propagating the number of effective samples to down-stream statistics like power or covariance.</li>
+<li>Being Morlet wavelets, the kernel families that can be obtained from our package can be used with other convolution implementations, if desired. This is explicitly supported by our API, supported by <a href="./tutorials/plot_wavelets.html">convenient visualization functionality</a>.</li>
+<li>Our package provides practically tested implementations of popular spectral metrics based on the same Wavelet convolutions (see next section).</li>
+<li><a href="./api/wavelets.html#more-unit-tests-and-validation">Unit tests</a> establish that Python and MATLAB code provide numerically equivalent results.</li>
+</ul>
+</section>
+<section id="overview-on-implemented-meeg-spectral-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="overview-on-implemented-meeg-spectral-metrics">Overview on implemented M/EEG spectral metrics</h2>
+<section id="power-measures" class="level3">
+<h3 class="anchored" data-anchor-id="power-measures">Power measures</h3>
+<ul>
+<li><code>pow</code>: power spectral density</li>
+<li><code>csd</code>: cross-spectral density</li>
+<li><code>cov</code>: covariance estimated from wavelet convolutons <span class="citation" data-cites="bomatter2023">(<a href="#ref-bomatter2023" role="doc-biblioref">Bomatter et al. 2023</a>)</span></li>
+</ul>
+</section>
+<section id="measures-of-phase-interaction-mixed-coherence-type" class="level3">
+<h3 class="anchored" data-anchor-id="measures-of-phase-interaction-mixed-coherence-type">Measures of phase interaction (mixed, coherence type)</h3>
+<ul>
+<li><code>coh</code>: coherence <span class="citation" data-cites="varela2001brainweb">(<a href="#ref-varela2001brainweb" role="doc-biblioref">Varela et al. 2001</a>)</span></li>
+<li><code>icoh</code>: imaginary coherence <span class="citation" data-cites="nolte2004identifying">(<a href="#ref-nolte2004identifying" role="doc-biblioref">Nolte et al. 2004</a>)</span></li>
+<li><code>gim</code>: global interaction measure <span class="citation" data-cites="ewald2012estimating">(<a href="#ref-ewald2012estimating" role="doc-biblioref">Ewald et al. 2012</a>)</span></li>
+</ul>
+</section>
+<section id="more-specific-measures-of-phase-interaction" class="level3">
+<h3 class="anchored" data-anchor-id="more-specific-measures-of-phase-interaction">More specific measures of phase interaction</h3>
+<ul>
+<li><code>plv</code>: phase-locking value <span class="citation" data-cites="lachaux1999">(<a href="#ref-lachaux1999" role="doc-biblioref">Lachaux et al. 1999</a>)</span></li>
+<li><code>pli</code>: phase-locking index <span class="citation" data-cites="stam2007phase">(<a href="#ref-stam2007phase" role="doc-biblioref">Stam, Nolte, and Daffertshofer 2007</a>)</span></li>
+<li><code>dwpli</code>: debiased squared weighted phase-lag index <span class="citation" data-cites="vinck2011improved">(<a href="#ref-vinck2011improved" role="doc-biblioref">Vinck et al. 2011</a>)</span></li>
+</ul>
+</section>
+<section id="power-envelope-correlations" class="level3">
+<h3 class="anchored" data-anchor-id="power-envelope-correlations">Power envelope correlations</h3>
+<ul>
+<li><code>r_plain</code>: power envelope correlation (log of rectified wavelet-convoluted timeseries) <span class="citation" data-cites="hipp2012large">(<a href="#ref-hipp2012large" role="doc-biblioref">Hipp et al. 2012</a>)</span></li>
+<li><code>r_orth</code>: orthogonalized power envelope correlation <span class="citation" data-cites="hipp2012large">(<a href="#ref-hipp2012large" role="doc-biblioref">Hipp et al. 2012</a>)</span></li>
+</ul>
+
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-bomatter2023" class="csl-entry" role="listitem">
+Bomatter, Philipp, Joseph Paillard, Pilar Garces, Joerg F Hipp, and Denis A Engemann. 2023. <span>“Machine Learning of Brain-Specific Biomarkers from EEG.”</span> <em>bioRxiv</em>.
+</div>
+<div id="ref-buzsaki2014log" class="csl-entry" role="listitem">
+Buzsáki, György, and Kenji Mizuseki. 2014. <span>“The Log-Dynamic Brain: How Skewed Distributions Affect Network Operations.”</span> <em>Nature Reviews Neuroscience</em> 15 (4): 264–78.
+</div>
+<div id="ref-cohen2019better" class="csl-entry" role="listitem">
+Cohen, Michael X. 2019. <span>“A Better Way to Define and Describe Morlet Wavelets for Time-Frequency Analysis.”</span> <em>NeuroImage</em> 199: 81–86.
+</div>
+<div id="ref-ewald2012estimating" class="csl-entry" role="listitem">
+Ewald, Arne, Laura Marzetti, Filippo Zappasodi, Frank C Meinecke, and Guido Nolte. 2012. <span>“Estimating True Brain Connectivity from EEG/MEG Data Invariant to Linear and Static Transformations in Sensor Space.”</span> <em>Neuroimage</em> 60 (1): 476–88.
+</div>
+<div id="ref-gabor1946theory" class="csl-entry" role="listitem">
+Gabor, Dennis. 1946. <span>“Theory of Communication. Part 1: The Analysis of Information.”</span> <em>Journal of the Institution of Electrical Engineers-Part III: Radio and Communication Engineering</em> 93 (26): 429–41.
+</div>
+<div id="ref-gramfort2013meg" class="csl-entry" role="listitem">
+Gramfort, Alexandre, Martin Luessi, Eric Larson, Denis A Engemann, Daniel Strohmeier, Christian Brodbeck, Roman Goj, et al. 2013. <span>“MEG and EEG Data Analysis with MNE-Python.”</span> <em>Frontiers in Neuroscience</em>, 267.
+</div>
+<div id="ref-hipp2012large" class="csl-entry" role="listitem">
+Hipp, Joerg F, David J Hawellek, Maurizio Corbetta, Markus Siegel, and Andreas K Engel. 2012. <span>“Large-Scale Cortical Correlation Structure of Spontaneous Oscillatory Activity.”</span> <em>Nature Neuroscience</em> 15 (6): 884–90.
+</div>
+<div id="ref-lachaux1999" class="csl-entry" role="listitem">
+Lachaux, Jean-Philippe, Eugenio Rodriguez, Jacques Martinerie, and Francisco J. Varela. 1999. <span>“Measuring Phase Synchrony in Brain Signals.”</span> <em>Human Brain Mapping</em> 8 (4): 194–208.
+</div>
+<div id="ref-morlet_wave_1982" class="csl-entry" role="listitem">
+Morlet, J., G. Arens, E. Fourgeau, and D. Giard. 1982. <span>“Wave Propagation and Sampling Theory—<span>Part</span> <span>II</span>: <span>Sampling</span> Theory and Complex Waves.”</span> <em>GEOPHYSICS</em> 47 (2): 222–36. <a href="https://doi.org/10.1190/1.1441329">https://doi.org/10.1190/1.1441329</a>.
+</div>
+<div id="ref-nolte2004identifying" class="csl-entry" role="listitem">
+Nolte, Guido, Ou Bai, Lewis Wheaton, Zoltan Mari, Sherry Vorbach, and Mark Hallett. 2004. <span>“Identifying True Brain Interaction from EEG Data Using the Imaginary Part of Coherency.”</span> <em>Clinical Neurophysiology</em> 115 (10): 2292–2307.
+</div>
+<div id="ref-stam2007phase" class="csl-entry" role="listitem">
+Stam, Cornelis J, Guido Nolte, and Andreas Daffertshofer. 2007. <span>“Phase Lag Index: Assessment of Functional Connectivity from Multi Channel EEG and MEG with Diminished Bias from Common Sources.”</span> <em>Human Brain Mapping</em> 28 (11): 1178–93.
+</div>
+<div id="ref-tallon1996stimulus" class="csl-entry" role="listitem">
+Tallon-Baudry, Catherine, Olivier Bertrand, Claude Delpuech, and Jacques Pernier. 1996. <span>“Stimulus Specificity of Phase-Locked and Non-Phase-Locked 40 Hz Visual Responses in Human.”</span> <em>Journal of Neuroscience</em> 16 (13): 4240–49.
+</div>
+<div id="ref-varela2001brainweb" class="csl-entry" role="listitem">
+Varela, Francisco, Jean-Philippe Lachaux, Eugenio Rodriguez, and Jacques Martinerie. 2001. <span>“The Brainweb: Phase Synchronization and Large-Scale Integration.”</span> <em>Nature Reviews Neuroscience</em> 2 (4): 229–39.
+</div>
+<div id="ref-vinck2011improved" class="csl-entry" role="listitem">
+Vinck, Martin, Robert Oostenveld, Marijn Van Wingerden, Franscesco Battaglia, and Cyriel MA Pennartz. 2011. <span>“An Improved Index of Phase-Synchronization for Electrophysiological Data in the Presence of Volume-Conduction, Noise and Sample-Size Bias.”</span> <em>Neuroimage</em> 55 (4): 1548–65.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Roche/neuro-meeglet/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

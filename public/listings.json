@@ -1,0 +1,29 @@
+[
+  {
+    "listing": "/api/index.html",
+    "items": [
+      "/api/wavelets.html"
+    ]
+  },
+  {
+    "listing": "/matlab/index.html",
+    "items": [
+      "/matlab/matlab_functions.html"
+    ]
+  },
+  {
+    "listing": "/background/index.html",
+    "items": [
+      "/background/0_tour.html",
+      "/background/1_background_wavelets.html"
+    ]
+  },
+  {
+    "listing": "/tutorials/index.html",
+    "items": [
+      "/tutorials/plot_wavelets.html",
+      "/tutorials/plot_eeg_covariance.html",
+      "/tutorials/plot_eeg_power.html"
+    ]
+  }
+]

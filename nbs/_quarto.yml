@@ -1,0 +1,35 @@
+project:
+  type: website
+  output-dir: _docs
+  preview:
+    port: 3000
+    browser: false
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    toc-depth: 4
+
+website:
+  title: neuro-meeglet
+  site-url: https://Roche.github.io/neuro-meeglet
+  description: Morlet Wavelets for M/EEG analysis
+  twitter-card: true
+  open-graph: true
+  repo-branch: main
+  repo-url: https://github.com/Roche/neuro-meeglet
+  repo-actions: [issue]
+  navbar:
+    background: primary
+    search: true
+    right:
+      - icon: github
+        href: https://github.com/Roche/neuro-meeglet
+  sidebar:
+    style: floating
+
+metadata-files: 
+  - sidebar.yml
+  - custom.yml

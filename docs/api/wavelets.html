@@ -1,0 +1,1929 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>neuro-meeglet - Morlet Wavelets for M/EEG</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="neuro-meeglet - Morlet Wavelets for M/EEG">
+<meta property="og:description" content="Morlet Wavelets for M/EEG analysis">
+<meta property="og:site_name" content="neuro-meeglet">
+<meta name="twitter:title" content="neuro-meeglet - Morlet Wavelets for M/EEG">
+<meta name="twitter:description" content="Morlet Wavelets for M/EEG analysis">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">neuro-meeglet</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/Roche/neuro-meeglet"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../api/index.html">Python API</a></li><li class="breadcrumb-item"><a href="../api/wavelets.html">Morlet Wavelets for M/EEG</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MEEGLET</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../background/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Background</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../background/0_tour.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Onboarding</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../background/1_background_wavelets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematical Deep Dive</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../tutorials/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python tutorials</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/plot_eeg_covariance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EEG covariance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/plot_eeg_power.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EEG power</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/plot_wavelets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Define Wavelets</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../api/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python API</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../api/wavelets.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Morlet Wavelets for M/EEG</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../matlab/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MATLAB</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../matlab/matlab_functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MATLAB functionality</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#defnining-families-of-morlet-wavelets" id="toc-defnining-families-of-morlet-wavelets" class="nav-link active" data-scroll-target="#defnining-families-of-morlet-wavelets">Defnining families of Morlet Wavelets</a>
+  <ul>
+  <li><a href="#define_wavelets" id="toc-define_wavelets" class="nav-link" data-scroll-target="#define_wavelets">define_wavelets</a></li>
+  <li><a href="#define_frequencies" id="toc-define_frequencies" class="nav-link" data-scroll-target="#define_frequencies">define_frequencies</a></li>
+  </ul></li>
+  <li><a href="#computing-spectral-features-from-families-of-morlet-wavelets." id="toc-computing-spectral-features-from-families-of-morlet-wavelets." class="nav-link" data-scroll-target="#computing-spectral-features-from-families-of-morlet-wavelets.">Computing spectral features from families of Morlet Wavelets.</a>
+  <ul>
+  <li><a href="#power-measures" id="toc-power-measures" class="nav-link" data-scroll-target="#power-measures">Power measures</a></li>
+  <li><a href="#measures-of-phase-interaction-mixed-coherence-type" id="toc-measures-of-phase-interaction-mixed-coherence-type" class="nav-link" data-scroll-target="#measures-of-phase-interaction-mixed-coherence-type">Measures of phase interaction (mixed, coherence type)</a></li>
+  <li><a href="#more-specific-measures-of-phase-interaction" id="toc-more-specific-measures-of-phase-interaction" class="nav-link" data-scroll-target="#more-specific-measures-of-phase-interaction">More specific measures of phase interaction</a></li>
+  <li><a href="#power-envelope-correlations" id="toc-power-envelope-correlations" class="nav-link" data-scroll-target="#power-envelope-correlations">Power envelope correlations</a></li>
+  <li><a href="#compute_spectral_features" id="toc-compute_spectral_features" class="nav-link" data-scroll-target="#compute_spectral_features">compute_spectral_features</a></li>
+  <li><a href="#compute_spectral_features_array" id="toc-compute_spectral_features_array" class="nav-link" data-scroll-target="#compute_spectral_features_array">compute_spectral_features_array</a></li>
+  </ul></li>
+  <li><a href="#helper-functions" id="toc-helper-functions" class="nav-link" data-scroll-target="#helper-functions">Helper functions</a>
+  <ul>
+  <li><a href="#spectrum_from_features" id="toc-spectrum_from_features" class="nav-link" data-scroll-target="#spectrum_from_features">spectrum_from_features</a></li>
+  <li><a href="#ro_corrcoef" id="toc-ro_corrcoef" class="nav-link" data-scroll-target="#ro_corrcoef">ro_corrcoef</a></li>
+  <li><a href="#bw2qt" id="toc-bw2qt" class="nav-link" data-scroll-target="#bw2qt">bw2qt</a></li>
+  <li><a href="#qt2bw" id="toc-qt2bw" class="nav-link" data-scroll-target="#qt2bw">qt2bw</a></li>
+  <li><a href="#plot-time-and-frequency-domain-representations-of-the-morlet-wavelet-family." id="toc-plot-time-and-frequency-domain-representations-of-the-morlet-wavelet-family." class="nav-link" data-scroll-target="#plot-time-and-frequency-domain-representations-of-the-morlet-wavelet-family.">Plot time and frequency domain representations of the Morlet wavelet family.</a></li>
+  <li><a href="#plot_wavelet_family" id="toc-plot_wavelet_family" class="nav-link" data-scroll-target="#plot_wavelet_family">plot_wavelet_family</a></li>
+  </ul></li>
+  <li><a href="#more-unit-tests-and-validation" id="toc-more-unit-tests-and-validation" class="nav-link" data-scroll-target="#more-unit-tests-and-validation">More unit tests and validation</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Roche/neuro-meeglet/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../api/index.html">Python API</a></li><li class="breadcrumb-item"><a href="../api/wavelets.html">Morlet Wavelets for M/EEG</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Morlet Wavelets for M/EEG</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="defnining-families-of-morlet-wavelets" class="level2">
+<h2 class="anchored" data-anchor-id="defnining-families-of-morlet-wavelets">Defnining families of Morlet Wavelets</h2>
+<p>The following functions facilitate defining families of Morlet Wavelets. This is useful to e.g.&nbsp;plot or analyze properties of the wavelets us ed for feature extraction. These functions are used internally by the feature-computation functions below.</p>
+<hr>
+<section id="define_wavelets" class="level3">
+<h3 class="anchored" data-anchor-id="define_wavelets">define_wavelets</h3>
+<blockquote class="blockquote">
+<pre><code> define_wavelets (foi:numpy.ndarray, sigma_time:numpy.ndarray,
+                  sfreq:float, kernel_width:int=5,
+                  window_shift:float=0.25, density:str='oct')</code></pre>
+</blockquote>
+<p>Compute Morelt Wavelets from frequency-domain parametrization.</p>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>foi</td>
+<td>ndarray</td>
+<td></td>
+<td>The range of center frequencies.</td>
+</tr>
+<tr class="even">
+<td>sigma_time</td>
+<td>ndarray</td>
+<td></td>
+<td>The temporal width (standard deviations) at a given frequency.</td>
+</tr>
+<tr class="odd">
+<td>sfreq</td>
+<td>float</td>
+<td></td>
+<td>The sampling frequency in Hz.</td>
+</tr>
+<tr class="even">
+<td>kernel_width</td>
+<td>int</td>
+<td>5</td>
+<td>The width of the kernel in standard deviations, leading to truncation.</td>
+</tr>
+<tr class="odd">
+<td>window_shift</td>
+<td>float</td>
+<td>0.25</td>
+<td>Controls the spacing of the sliding windows proportionally to the</td>
+</tr>
+<tr class="even">
+<td>density</td>
+<td>str</td>
+<td>oct</td>
+<td>Scaling of the power spectrum in Hz or per octave (‘oct’). Defaults to ‘oct’.</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>list</strong></td>
+<td></td>
+<td><strong>The list of complex Morlet wavelets alongside the scaling applied, the effective number of samples and the amount of samples shifted in time, ordered by input frequencies.</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="define_frequencies" class="level3">
+<h3 class="anchored" data-anchor-id="define_frequencies">define_frequencies</h3>
+<blockquote class="blockquote">
+<pre><code> define_frequencies (foi_start:float=2, foi_end:float=32,
+                     delta_oct:Optional[float]=None, bw_oct:float=0.5,
+                     qt:Optional[float]=None, freq_shift_factor:int=1)</code></pre>
+</blockquote>
+<p>Construct log-space equidistant frequency bins with proportional variance.</p>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>foi_start</td>
+<td>float</td>
+<td>2</td>
+<td>The lowest frequency of interest.</td>
+</tr>
+<tr class="even">
+<td>foi_end</td>
+<td>float</td>
+<td>32</td>
+<td>The highest frequency of interest.</td>
+</tr>
+<tr class="odd">
+<td>delta_oct</td>
+<td>Optional</td>
+<td>None</td>
+<td>Controls the frequency resolution. If None, defaults</td>
+</tr>
+<tr class="even">
+<td>bw_oct</td>
+<td>float</td>
+<td>0.5</td>
+<td>The bandwidth of the Wavelets in octaves. Larger band width lead to more smoothing.</td>
+</tr>
+<tr class="odd">
+<td>qt</td>
+<td>Optional</td>
+<td>None</td>
+<td>The bandwidth of the Wavelets expressed in characteristic Morlet parameter Q (overriding bw_oct).</td>
+</tr>
+<tr class="even">
+<td>freq_shift_factor</td>
+<td>int</td>
+<td>1</td>
+<td>Allows shifting the frequency spectrum in logarithmic space (in octave units).</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>(&lt;class ‘numpy.ndarray’&gt;, &lt;class ‘numpy.ndarray’&gt;, &lt;class ‘numpy.ndarray’&gt;, &lt;class ‘numpy.ndarray’&gt;)</strong></td>
+<td></td>
+<td><strong><code>foi</code>, the expaneded frequency range, <code>sigma_time</code>, the temporal width (SD), <code>sigma_freq</code>, the spectral width.</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="computing-spectral-features-from-families-of-morlet-wavelets." class="level2">
+<h2 class="anchored" data-anchor-id="computing-spectral-features-from-families-of-morlet-wavelets.">Computing spectral features from families of Morlet Wavelets.</h2>
+<p>The following functions provide NumPy and an MNE interfaces for computing spectral features features from M/EEG input signals for a defined family of Morlet wavelets.</p>
+<p>The spectral measures implemented include:</p>
+<section id="power-measures" class="level3">
+<h3 class="anchored" data-anchor-id="power-measures">Power measures</h3>
+<ul>
+<li><code>pow</code>: power spectral density</li>
+<li><code>csd</code>: cross-spectral density</li>
+<li><code>cov</code>: covariance estimated from wavelet convolutons <span class="citation" data-cites="bomatter2023">(<a href="#ref-bomatter2023" role="doc-biblioref">Bomatter et al. 2023</a>)</span></li>
+</ul>
+</section>
+<section id="measures-of-phase-interaction-mixed-coherence-type" class="level3">
+<h3 class="anchored" data-anchor-id="measures-of-phase-interaction-mixed-coherence-type">Measures of phase interaction (mixed, coherence type)</h3>
+<ul>
+<li><code>coh</code>: coherence <span class="citation" data-cites="varela2001brainweb">(<a href="#ref-varela2001brainweb" role="doc-biblioref">Varela et al. 2001</a>)</span></li>
+<li><code>icoh</code>: imaginary coherence <span class="citation" data-cites="nolte2004identifying">(<a href="#ref-nolte2004identifying" role="doc-biblioref">Nolte et al. 2004</a>)</span></li>
+<li><code>gim</code>: global interaction measure <span class="citation" data-cites="ewald2012estimating">(<a href="#ref-ewald2012estimating" role="doc-biblioref">Ewald et al. 2012</a>)</span></li>
+</ul>
+</section>
+<section id="more-specific-measures-of-phase-interaction" class="level3">
+<h3 class="anchored" data-anchor-id="more-specific-measures-of-phase-interaction">More specific measures of phase interaction</h3>
+<ul>
+<li><code>plv</code>: phase-locking value <span class="citation" data-cites="lachaux1999">(<a href="#ref-lachaux1999" role="doc-biblioref">Lachaux et al. 1999</a>)</span></li>
+<li><code>pli</code>: phase-locking index <span class="citation" data-cites="stam2007phase">(<a href="#ref-stam2007phase" role="doc-biblioref">Stam, Nolte, and Daffertshofer 2007</a>)</span></li>
+<li><code>dwpli</code>: debiased squared weighted phase-lag index <span class="citation" data-cites="vinck2011improved">(<a href="#ref-vinck2011improved" role="doc-biblioref">Vinck et al. 2011</a>)</span></li>
+</ul>
+</section>
+<section id="power-envelope-correlations" class="level3">
+<h3 class="anchored" data-anchor-id="power-envelope-correlations">Power envelope correlations</h3>
+<ul>
+<li><code>r_plain</code>: power envelope correlation (log of rectified wavelet-convoluted timeseries) <span class="citation" data-cites="hipp2012large">(<a href="#ref-hipp2012large" role="doc-biblioref">Hipp et al. 2012</a>)</span></li>
+<li><code>r_orth</code>: orthogonalized power envelope correlation <span class="citation" data-cites="hipp2012large">(<a href="#ref-hipp2012large" role="doc-biblioref">Hipp et al. 2012</a>)</span></li>
+</ul>
+<hr>
+</section>
+<section id="compute_spectral_features" class="level3">
+<h3 class="anchored" data-anchor-id="compute_spectral_features">compute_spectral_features</h3>
+<blockquote class="blockquote">
+<pre><code> compute_spectral_features
+                            (inst:Union[mne.io.fiff.raw.Raw,mne.epochs.Epo
+                            chs], delta_oct:Optional[float]=None,
+                            bw_oct:float=0.5, qt:Optional[float]=None,
+                            foi_start:float=2, foi_end:float=32,
+                            window_shift:float=0.25, kernel_width:int=5,
+                            freq_shift_factor:int=1,
+                            allow_fraction_nan:int=0,
+                            features:Union[tuple,list]=('pow',),
+                            density:str='oct',
+                            nan_from_annotations:bool=False,
+                            prepend_nan_epochs:bool=False,
+                            rank:Optional[int]=None,
+                            verbose:Union[bool,int,str]=False)</code></pre>
+</blockquote>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>inst</td>
+<td>Union</td>
+<td></td>
+<td>An MNE object representing raw (continous) or epoched data.</td>
+</tr>
+<tr class="even">
+<td>delta_oct</td>
+<td>Optional</td>
+<td>None</td>
+<td>Controls the frequency resolution. If None, defaults</td>
+</tr>
+<tr class="odd">
+<td>bw_oct</td>
+<td>float</td>
+<td>0.5</td>
+<td>The bandwidth of the Wavelets in octaves. Larger band width lead to more smoothing.</td>
+</tr>
+<tr class="even">
+<td>qt</td>
+<td>Optional</td>
+<td>None</td>
+<td>The bandwidth of the Wavelets expressed in characteristic Morlet parameter Q (overriding bw_oct).</td>
+</tr>
+<tr class="odd">
+<td>foi_start</td>
+<td>float</td>
+<td>2</td>
+<td>The lowest frequency of interest.</td>
+</tr>
+<tr class="even">
+<td>foi_end</td>
+<td>float</td>
+<td>32</td>
+<td>The highest frequency of interest.</td>
+</tr>
+<tr class="odd">
+<td>window_shift</td>
+<td>float</td>
+<td>0.25</td>
+<td>Controls the spacing of the sliding windows proportionally to the</td>
+</tr>
+<tr class="even">
+<td>kernel_width</td>
+<td>int</td>
+<td>5</td>
+<td>The width of the kernel in standard deviations, leading to truncation.</td>
+</tr>
+<tr class="odd">
+<td>freq_shift_factor</td>
+<td>int</td>
+<td>1</td>
+<td>Allows shifting the frequency spectrum in logarithmic space (in octave units).</td>
+</tr>
+<tr class="even">
+<td>allow_fraction_nan</td>
+<td>int</td>
+<td>0</td>
+<td>The fraction of NA values allowed.</td>
+</tr>
+<tr class="odd">
+<td>features</td>
+<td>Union</td>
+<td>(‘pow’,)</td>
+<td>The spectral featueres to be computed.</td>
+</tr>
+<tr class="even">
+<td>density</td>
+<td>str</td>
+<td>oct</td>
+<td>Scaling of the power spectrum in Hz or per octave (‘oct’). Defaults to ‘oct’.</td>
+</tr>
+<tr class="odd">
+<td>nan_from_annotations</td>
+<td>bool</td>
+<td>False</td>
+<td>If annotations should be converted to missing values. Currently only</td>
+</tr>
+<tr class="even">
+<td>prepend_nan_epochs</td>
+<td>bool</td>
+<td>False</td>
+<td>Whether to add a Nan value at the beginning of each epoch to avoid boundary artifacts.</td>
+</tr>
+<tr class="odd">
+<td>rank</td>
+<td>Optional</td>
+<td>None</td>
+<td>numeric rank of the input</td>
+</tr>
+<tr class="even">
+<td>verbose</td>
+<td>Union</td>
+<td>False</td>
+<td><code>mne.verbose</code> for details. Should only be passed as a keyword argument.</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>(&lt;class ‘types.SimpleNamespace’&gt;, &lt;class ‘types.SimpleNamespace’&gt;)</strong></td>
+<td></td>
+<td><strong>The <code>features</code> with, e.g., <code>.pow</code>, <code>.cov</code> as attributes</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="compute_spectral_features_array" class="level3">
+<h3 class="anchored" data-anchor-id="compute_spectral_features_array">compute_spectral_features_array</h3>
+<blockquote class="blockquote">
+<pre><code> compute_spectral_features_array (data:numpy.ndarray, sfreq:float,
+                                  delta_oct:Optional[float]=None,
+                                  bw_oct:float=0.5,
+                                  qt:Optional[float]=None,
+                                  foi_start:float=2, foi_end:float=32,
+                                  window_shift:float=0.25,
+                                  kernel_width:int=5,
+                                  freq_shift_factor:int=1,
+                                  allow_fraction_nan:int=0,
+                                  features:Union[tuple,list]=('pow',),
+                                  density:str='oct',
+                                  rank:Optional[int]=None,
+                                  verbose:Union[bool,int,str]=False)</code></pre>
+</blockquote>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>data</td>
+<td>ndarray</td>
+<td></td>
+<td>The continously sampled input data (may contain NaNs),</td>
+</tr>
+<tr class="even">
+<td>sfreq</td>
+<td>float</td>
+<td></td>
+<td>The sampling frequency in Hz.</td>
+</tr>
+<tr class="odd">
+<td>delta_oct</td>
+<td>Optional</td>
+<td>None</td>
+<td>Controls the frequency resolution. If None, defaults</td>
+</tr>
+<tr class="even">
+<td>bw_oct</td>
+<td>float</td>
+<td>0.5</td>
+<td>The bandwidth of the Wavelets in octaves. Larger band width lead to more smoothing.</td>
+</tr>
+<tr class="odd">
+<td>qt</td>
+<td>Optional</td>
+<td>None</td>
+<td>The bandwidth of the Wavelets expressed in characteristic Morlet parameter Q (overriding bw_oct).</td>
+</tr>
+<tr class="even">
+<td>foi_start</td>
+<td>float</td>
+<td>2</td>
+<td>The lowest frequency of interest.</td>
+</tr>
+<tr class="odd">
+<td>foi_end</td>
+<td>float</td>
+<td>32</td>
+<td>The highest frequency of interest.</td>
+</tr>
+<tr class="even">
+<td>window_shift</td>
+<td>float</td>
+<td>0.25</td>
+<td>Controls the spacing of the sliding windows proportionally to the</td>
+</tr>
+<tr class="odd">
+<td>kernel_width</td>
+<td>int</td>
+<td>5</td>
+<td>The width of the kernel in standard deviations, leading to truncation.</td>
+</tr>
+<tr class="even">
+<td>freq_shift_factor</td>
+<td>int</td>
+<td>1</td>
+<td>Allows shifting the frequency spectrum in logarithmic space (in octave units).</td>
+</tr>
+<tr class="odd">
+<td>allow_fraction_nan</td>
+<td>int</td>
+<td>0</td>
+<td>The fraction of NA values allowed.</td>
+</tr>
+<tr class="even">
+<td>features</td>
+<td>Union</td>
+<td>(‘pow’,)</td>
+<td>The spectral featueres to be computed.</td>
+</tr>
+<tr class="odd">
+<td>density</td>
+<td>str</td>
+<td>oct</td>
+<td>Scaling of the power spectrum in Hz or per octave (‘oct’). Defaults to ‘oct’.</td>
+</tr>
+<tr class="even">
+<td>rank</td>
+<td>Optional</td>
+<td>None</td>
+<td>numeric rank of the input</td>
+</tr>
+<tr class="odd">
+<td>verbose</td>
+<td>Union</td>
+<td>False</td>
+<td><code>mne.verbose</code> for details. Should only be passed as a keyword argument.</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>(&lt;class ‘types.SimpleNamespace’&gt;, &lt;class ‘types.SimpleNamespace’&gt;)</strong></td>
+<td></td>
+<td><strong>The <code>features</code> with, e.g., <code>.pow</code>, <code>.cov</code> as attributes</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="helper-functions" class="level2">
+<h2 class="anchored" data-anchor-id="helper-functions">Helper functions</h2>
+<p>To facilitate the integration with the MNE workflow, a simple wrapper can map outputs to the MNE Spectrum class.</p>
+<hr>
+<section id="spectrum_from_features" class="level3">
+<h3 class="anchored" data-anchor-id="spectrum_from_features">spectrum_from_features</h3>
+<blockquote class="blockquote">
+<pre><code> spectrum_from_features (data:numpy.ndarray, freqs:numpy.ndarray,
+                         inst_info:mne._fiff.meas_info.Info)</code></pre>
+</blockquote>
+<p>Create MNE averaged power spectrum object from features</p>
+<table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>data</td>
+<td>ndarray</td>
+<td>spectral features, e.g.&nbsp;power, shape(n_channels, n_frequencies)</td>
+</tr>
+<tr class="even">
+<td>freqs</td>
+<td>ndarray</td>
+<td>frequencies, shape(n_frequencies)</td>
+</tr>
+<tr class="odd">
+<td>inst_info</td>
+<td>Info</td>
+<td>the meta data of the MNE instance used for computing the features</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>Spectrum</strong></td>
+<td><strong>the MNE power spectrum object</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Vectorized correlation coefficients.</p>
+<hr>
+</section>
+<section id="ro_corrcoef" class="level3">
+<h3 class="anchored" data-anchor-id="ro_corrcoef">ro_corrcoef</h3>
+<blockquote class="blockquote">
+<pre><code> ro_corrcoef (x:numpy.ndarray, y:numpy.ndarray, dim:int)</code></pre>
+</blockquote>
+<table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>x</td>
+<td>ndarray</td>
+<td>the seed (assuming time samples on last axis)</td>
+</tr>
+<tr class="even">
+<td>y</td>
+<td>ndarray</td>
+<td>the targets (assuming time samples on last axis)</td>
+</tr>
+<tr class="odd">
+<td>dim</td>
+<td>int</td>
+<td>number of dimensions</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>SimpleNamespace</strong></td>
+<td><strong>the computed correlation values and statistics:</strong></td>
+</tr>
+</tbody>
+</table>
+<div id="cell-12" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> svd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-13" class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ro_pinv(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>        A: np.ndarray,  <span class="co"># 2d matrix</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        r: Union[<span class="bu">int</span>, <span class="va">None</span>]<span class="op">=</span><span class="va">None</span>,  <span class="co"># numeric rank</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> np.ndarray:  <span class="co"># the pseudoinverse of A</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> r <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> A.shape[<span class="dv">0</span>]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    U, s, Vt <span class="op">=</span> svd(A, full_matrices<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    s_inv <span class="op">=</span> np.diag(<span class="dv">1</span> <span class="op">/</span> s[:r])</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> Vt.T[:, :r] <span class="op">@</span> s_inv <span class="op">@</span> U[:, :r].T</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array(</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>   [[<span class="op">-</span><span class="fl">1.6747</span>, <span class="op">-</span><span class="fl">0.4051</span>, <span class="fl">1.5477</span>],</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    [<span class="op">-</span><span class="fl">0.7688</span>, <span class="op">-</span><span class="fl">0.5308</span>, <span class="fl">0.6110</span>],</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    [<span class="op">-</span><span class="fl">1.6105</span>, <span class="fl">0.3157</span>, <span class="op">-</span><span class="fl">0.1422</span>]]</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>A_inv <span class="op">=</span> ro_pinv(A)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(A, ro_pinv(A_inv))</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(A <span class="op">@</span> A_inv, np.eye(<span class="dv">3</span>))</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(A_inv <span class="op">@</span> A, np.eye(<span class="dv">3</span>))</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>A_inv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>array([[ 0.11085518, -0.40693121, -0.54194378],
+       [ 1.03227358, -2.57819711,  0.15732342],
+       [ 1.03626232, -1.1151485 , -0.54523585]])</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="bw2qt" class="level3">
+<h3 class="anchored" data-anchor-id="bw2qt">bw2qt</h3>
+<blockquote class="blockquote">
+<pre><code> bw2qt (bw:float)</code></pre>
+</blockquote>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bw</td>
+<td>float</td>
+<td>the Wavelet’s bandwidth</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>float</strong></td>
+<td><strong>characteristic Morlet parameter</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="qt2bw" class="level3">
+<h3 class="anchored" data-anchor-id="qt2bw">qt2bw</h3>
+<blockquote class="blockquote">
+<pre><code> qt2bw (qt:float)</code></pre>
+</blockquote>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>qt</td>
+<td>float</td>
+<td>characteristic Morlet parameter</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>float</strong></td>
+<td><strong>the Wavelet’s bandwidth</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="plot-time-and-frequency-domain-representations-of-the-morlet-wavelet-family." class="level3">
+<h3 class="anchored" data-anchor-id="plot-time-and-frequency-domain-representations-of-the-morlet-wavelet-family.">Plot time and frequency domain representations of the Morlet wavelet family.</h3>
+<hr>
+</section>
+<section id="plot_wavelet_family" class="level3">
+<h3 class="anchored" data-anchor-id="plot_wavelet_family">plot_wavelet_family</h3>
+<blockquote class="blockquote">
+<pre><code> plot_wavelet_family (wavelets:list, foi:numpy.ndarray,
+                      sampling_rate:float=1000.0, cmap:matplotlib.colors.C
+                      olormap=&lt;matplotlib.colors.ListedColormap object at
+                      0x14afaafe0&gt;, f_scale:str='linear',
+                      scale:Union[float,int]=4, fmin:Union[float,int]=0,
+                      fmax:Union[float,int]=120)</code></pre>
+</blockquote>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>wavelets</td>
+<td>list</td>
+<td></td>
+<td>List of wavelets and associated parameters.</td>
+</tr>
+<tr class="even">
+<td>foi</td>
+<td>ndarray</td>
+<td></td>
+<td>Frequencies of interest.</td>
+</tr>
+<tr class="odd">
+<td>sampling_rate</td>
+<td>float</td>
+<td>1000.0</td>
+<td>Wavelet frequency. Inverse of the time separating two points.</td>
+</tr>
+<tr class="even">
+<td>cmap</td>
+<td>Colormap</td>
+<td>&lt;matplotlib.colors.ListedColormap object at 0x14afaafe0&gt;</td>
+<td>Colormap.</td>
+</tr>
+<tr class="odd">
+<td>f_scale</td>
+<td>str</td>
+<td>linear</td>
+<td>X-axis scale for the power spectra. ‘log’ | ‘linear’.</td>
+</tr>
+<tr class="even">
+<td>scale</td>
+<td>Union</td>
+<td>4</td>
+<td>Window scaling factor. If &lt;1 the wavelet will be cropped. If &gt;1 wavelet will be padded with 0 leading to a smoother frequency domain representation.</td>
+</tr>
+<tr class="odd">
+<td>fmin</td>
+<td>Union</td>
+<td>0</td>
+<td>Min frequency to display.</td>
+</tr>
+<tr class="even">
+<td>fmax</td>
+<td>Union</td>
+<td>120</td>
+<td>Max frequency to display,</td>
+</tr>
+<tr class="odd">
+<td><strong>Returns</strong></td>
+<td><strong>Figure</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div id="cell-18" class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>bw_oct <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>delta_oct <span class="op">=</span> <span class="fl">0.5</span>  <span class="co"># one octave spacing between frequencies of interest (foi)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>sampling_rate <span class="op">=</span> <span class="fl">1e3</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>foi, sigma_time, sigma_freq, <span class="op">*</span>_ <span class="op">=</span> define_frequencies(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    foi_start<span class="op">=</span><span class="dv">5</span>, foi_end<span class="op">=</span><span class="dv">120</span>, delta_oct<span class="op">=</span>delta_oct, bw_oct<span class="op">=</span>bw_oct</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>wavelets <span class="op">=</span> define_wavelets(</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    foi,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    sigma_time,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    sfreq<span class="op">=</span>sampling_rate</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>plot_wavelet_family(wavelets, foi)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wavelets_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This helper computes correlation coefficients and related statistics, including hypothesis tests from input vectors or matricess. The correlations are between either the input vector <code>x</code> and vector <code>y</code> or all columns of <code>y</code> or between each column of <code>x</code> and the corresponding colymn in <code>y</code> with the same index.</p>
+<div id="cell-20" class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.RandomState(<span class="dv">42</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> rng.random_sample((<span class="dv">100</span>, <span class="dv">1</span>)).T </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> rng.random_sample((<span class="dv">100</span>, <span class="dv">3</span>)).T</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> ro_corrcoef(x, y, <span class="dv">2</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(out.r)  <span class="co"># correlation between pairs of columns in x and y</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(out.p)  <span class="co"># associated p values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[-0.14794559  0.10328645  0.03207745]
+[0.14184577 0.30648903 0.75137784]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="more-unit-tests-and-validation" class="level2">
+<h2 class="anchored" data-anchor-id="more-unit-tests-and-validation">More unit tests and validation</h2>
+<p>The tests below establish equivalence up to a given decimal with the original Matlab code.</p>
+<div id="cell-22" class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_testing_data():</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    raw <span class="op">=</span> mne.io.read_raw(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        mne.datasets.testing.data_path() <span class="op">/</span> <span class="st">'MEG/sample/sample_audvis_trunc_raw.fif'</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    raw.pick(<span class="st">'eeg'</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    raw.drop_channels(<span class="st">'EEG 053'</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    raw.load_data()</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> raw</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_matlab_results():</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    testing_path <span class="op">=</span>  Path().cwd() <span class="op">/</span> <span class="st">'data'</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    matlab_results <span class="op">=</span> loadmat(</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>        testing_path <span class="op">/</span> <span class="st">'mne_meeglet_testing_data.mat'</span>, squeeze_me<span class="op">=</span><span class="va">True</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    mat_results <span class="op">=</span> [</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>        matlab_results[<span class="ss">f'out</span><span class="sc">{</span>kk<span class="sc">}</span><span class="ss">'</span>] <span class="cf">for</span> kk <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mat_results, matlab_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-23" class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">False</span>:  <span class="co"># testing &amp; exploring testing data</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    raw <span class="op">=</span> read_testing_data()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    plt.plot(raw.times, read_testing_data().get_data().T <span class="op">*</span> <span class="fl">1e6</span>)<span class="op">;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="ss">f'EEG $\mu V$'</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Time [s]'</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    plt.xlim(<span class="dv">0</span>, raw.times[<span class="op">-</span><span class="dv">1</span>])<span class="op">;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    plt.ylim(<span class="op">-</span><span class="dv">100</span>, <span class="dv">200</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-24" class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_compare_matlab_vs_python():</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Test spectral features array-interface against Matlab implementation."</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    raw <span class="op">=</span> read_testing_data()</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    dat <span class="op">=</span> raw.get_data() <span class="op">*</span> <span class="fl">1e6</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    dat[:, <span class="dv">4999</span>:<span class="dv">5050</span>] <span class="op">=</span> np.nan</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    sfreq <span class="op">=</span> raw.info[<span class="st">'sfreq'</span>]</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        dat.shape,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        sfreq</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    mat_results, matlab_results <span class="op">=</span> get_matlab_results()</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    features <span class="op">=</span> [</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">'pow'</span>, <span class="st">'pow_geo'</span>, <span class="st">'pow_median'</span>, <span class="st">'pow_var'</span>, <span class="st">'csd'</span>, <span class="st">'cov'</span>, <span class="st">'gim'</span>,</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">'coh'</span>, <span class="st">'icoh'</span>, <span class="st">'plv'</span>, <span class="st">'pli'</span>, <span class="st">'dwpli'</span>, <span class="st">'r_plain'</span>, <span class="st">'r_orth'</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    cfg1 <span class="op">=</span> <span class="bu">dict</span>(</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>        data<span class="op">=</span>dat,</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>        sfreq<span class="op">=</span>sfreq,</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>        bw_oct<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>        foi_start<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>        foi_end<span class="op">=</span><span class="dv">32</span>,</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>        window_shift<span class="op">=</span><span class="fl">0.25</span>,</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>        kernel_width<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>        allow_fraction_nan<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>        freq_shift_factor<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>        features<span class="op">=</span>features,</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>        density<span class="op">=</span><span class="st">'oct'</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>    cfg2 <span class="op">=</span> <span class="bu">dict</span>(cfg1)</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    cfg2[<span class="st">'density'</span>] <span class="op">=</span> <span class="st">'Hz'</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>    cfg2[<span class="st">'bw_oct'</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>    cfg2[<span class="st">'qt'</span>] <span class="op">=</span> <span class="dv">7</span></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>    cfg3 <span class="op">=</span> <span class="bu">dict</span>(cfg1)</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>    cfg3[<span class="st">'allow_fraction_nan'</span>] <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>    cfg3[<span class="st">'rank'</span>] <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>    out1, info1 <span class="op">=</span> compute_spectral_features_array(<span class="op">**</span>cfg1)</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test that basic frequency definitions &amp; valid samples match</span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>    assert_array_almost_equal(</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>        info1.foi, </span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>        matlab_results[<span class="st">'out1'</span>][<span class="st">'foi'</span>].ravel()[<span class="dv">0</span>]</span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>    assert_array_almost_equal(</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>        info1.n_valid_total, </span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>        matlab_results[<span class="st">'out1'</span>][<span class="st">'n'</span>].ravel()[<span class="dv">0</span>]</span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>    assert_array_almost_equal(</span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>        info1.qt, </span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>        matlab_results[<span class="st">'out1'</span>][<span class="st">'qt'</span>].ravel()[<span class="dv">0</span>]</span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>    assert_array_almost_equal(</span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a>        info1.bw_oct, </span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>        matlab_results[<span class="st">'out1'</span>][<span class="st">'bw_oct'</span>].ravel()[<span class="dv">0</span>]</span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>    out2, _ <span class="op">=</span> compute_spectral_features_array(<span class="op">**</span>cfg2)</span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a>    out3, _ <span class="op">=</span> compute_spectral_features_array(<span class="op">**</span>cfg3)</span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a>    <span class="co"># with nans, powers should be different if nans are present VS not present.</span></span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.<span class="bu">any</span>(np.not_equal(out1.<span class="bu">pow</span>, out3.<span class="bu">pow</span>))</span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a>    pyt_results <span class="op">=</span> [out1, out2, out3]</span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ii, (mat_res, pyt_res) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(mat_results, pyt_results)):</span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> meas <span class="kw">in</span> features:</span>
+<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>            decimal <span class="op">=</span> {</span>
+<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a>                <span class="st">'pow'</span>: <span class="dv">12</span>,</span>
+<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a>                <span class="st">'pow_geo'</span>: <span class="dv">13</span>,</span>
+<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a>                <span class="st">'pow_median'</span>: <span class="dv">13</span>,</span>
+<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a>                <span class="st">'pow_var'</span>: <span class="dv">9</span>,</span>
+<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a>                <span class="st">'csd'</span>: <span class="dv">12</span>,</span>
+<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a>                <span class="st">'cov'</span>: <span class="dv">12</span>,</span>
+<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a>                <span class="st">'gim'</span>: <span class="dv">8</span> <span class="cf">if</span> ii <span class="op">&lt;</span> <span class="dv">2</span> <span class="cf">else</span> <span class="dv">12</span>,</span>
+<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a>                <span class="st">'coh'</span>: <span class="dv">14</span>,</span>
+<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a>                <span class="st">'icoh'</span>: <span class="dv">14</span>,</span>
+<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a>                <span class="st">'plv'</span>: <span class="dv">14</span>,</span>
+<span id="cb18-85"><a href="#cb18-85" aria-hidden="true" tabindex="-1"></a>                <span class="st">'pli'</span>: <span class="dv">14</span>, <span class="co"># XXX</span></span>
+<span id="cb18-86"><a href="#cb18-86" aria-hidden="true" tabindex="-1"></a>                <span class="st">'dwpli'</span>: <span class="dv">13</span>,</span>
+<span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a>                <span class="st">'r_plain'</span>: <span class="dv">10</span>,</span>
+<span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a>                <span class="st">'r_orth'</span>: <span class="dv">10</span></span>
+<span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a>            }[meas]</span>
+<span id="cb18-90"><a href="#cb18-90" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> mat_res[meas].tolist()</span>
+<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="bu">getattr</span>(pyt_res, meas)</span>
+<span id="cb18-92"><a href="#cb18-92" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> meas <span class="kw">in</span> (<span class="st">'r_orth'</span>):  <span class="co"># handle diagonals</span></span>
+<span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> ii <span class="kw">in</span> <span class="bu">range</span>(x.shape[<span class="op">-</span><span class="dv">1</span>]):</span>
+<span id="cb18-94"><a href="#cb18-94" aria-hidden="true" tabindex="-1"></a>                    x[..., ii].flat[::x.shape[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">1</span>] <span class="op">=</span> np.nan</span>
+<span id="cb18-95"><a href="#cb18-95" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> ii <span class="kw">in</span> <span class="bu">range</span>(y.shape[<span class="op">-</span><span class="dv">1</span>]):</span>
+<span id="cb18-96"><a href="#cb18-96" aria-hidden="true" tabindex="-1"></a>                    y[..., ii].flat[::y.shape[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">1</span>] <span class="op">=</span> np.nan</span>
+<span id="cb18-97"><a href="#cb18-97" aria-hidden="true" tabindex="-1"></a>            x_flat <span class="op">=</span> x.flatten()</span>
+<span id="cb18-98"><a href="#cb18-98" aria-hidden="true" tabindex="-1"></a>            y_flat <span class="op">=</span> y.flatten()</span>
+<span id="cb18-99"><a href="#cb18-99" aria-hidden="true" tabindex="-1"></a>            assert_array_almost_equal(x_flat, y_flat, decimal<span class="op">=</span>decimal)</span>
+<span id="cb18-100"><a href="#cb18-100" aria-hidden="true" tabindex="-1"></a>    cfg4 <span class="op">=</span> <span class="bu">dict</span>(cfg3)</span>
+<span id="cb18-101"><a href="#cb18-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-102"><a href="#cb18-102" aria-hidden="true" tabindex="-1"></a>test_compare_matlab_vs_python()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Opening raw data file /Users/engemand/mne_data/MNE-testing-data/MEG/sample/sample_audvis_trunc_raw.fif...
+    Read a total of 4 projection items:
+        PCA-v1 (1 x 102)  idle
+        PCA-v2 (1 x 102)  idle
+        PCA-v3 (1 x 102)  idle
+        Average EEG reference (1 x 60)  idle
+    Range : 12900 ... 18906 =     42.956 ...    62.955 secs
+Ready.
+Removing projector &lt;Projection | PCA-v1, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | PCA-v2, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | PCA-v3, active : False, n_channels : 102&gt;
+Reading 0 ... 6006  =      0.000 ...    20.000 secs...
+(59, 6007) 300.3074951171875</code></pre>
+</div>
+</div>
+<div id="cell-25" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="at">@requires_testing_data</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_meg_eeg_data_handling():</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Test handling of appropriate input data"</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    fname <span class="op">=</span> (Path(mne.datasets.testing.data_path()) <span class="op">/</span> <span class="st">'MEG'</span> <span class="op">/</span> <span class="st">'sample'</span> <span class="op">/</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">'sample_audvis_trunc_raw.fif'</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    raw <span class="op">=</span> mne.io.read_raw_fif(fname).load_data()</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    raw_no_meeg <span class="op">=</span> raw.copy().pick([<span class="st">'stim'</span>])</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test type handling: no relvant data</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pytest.raises(<span class="pp">ValueError</span>) <span class="im">as</span> excinfo:</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        out, info <span class="op">=</span> compute_spectral_features(raw_no_meeg)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="st">"Currently only supporting EEG or MEG data"</span> <span class="kw">in</span> <span class="bu">str</span>(excinfo.value)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">del</span> raw_no_meeg</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test type handling: data types not unique</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    raw_grad_mag <span class="op">=</span> raw.copy().pick([<span class="st">'meg'</span>])</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> this_raw <span class="kw">in</span> (raw, raw_grad_mag):</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> pytest.raises(<span class="pp">ValueError</span>) <span class="im">as</span> excinfo:</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>            out, info <span class="op">=</span> compute_spectral_features(this_raw)</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> (<span class="st">'Currently only supporting unique sensor types at once. '</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>                <span class="st">'Please pick your data types.'</span>) <span class="kw">in</span> <span class="bu">str</span>(excinfo.value)</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">del</span> raw_grad_mag</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test setting of correct units\</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> [raw.copy().pick([<span class="st">'eeg'</span>]),</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>            raw.copy().pick([<span class="st">'mag'</span>]),</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>            raw.copy().pick([<span class="st">'grad'</span>])]</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> density <span class="kw">in</span> (<span class="st">'Hz'</span>, <span class="st">'oct'</span>):</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> this_raw, data_type <span class="kw">in</span> <span class="bu">zip</span>(data, (<span class="st">'eeg'</span>, <span class="st">'mag'</span>, <span class="st">'grad'</span>)):</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>            out, info <span class="op">=</span> compute_spectral_features(this_raw, density<span class="op">=</span>density)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>            data_unit <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="st">'eeg'</span> <span class="kw">in</span> this_raw:</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>                data_unit <span class="op">=</span> <span class="st">'V'</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> <span class="st">'mag'</span> <span class="kw">in</span> this_raw:</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>                data_unit <span class="op">=</span> <span class="st">'T'</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> <span class="st">'grad'</span> <span class="kw">in</span> this_raw:</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>                data_unit <span class="op">=</span> <span class="st">'T/cm'</span></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>            data_unit_expected <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>data_unit<span class="sc">}</span><span class="ss">²/</span><span class="sc">{</span><span class="st">"Hz"</span> <span class="cf">if</span> density <span class="op">==</span> <span class="st">"Hz"</span> <span class="cf">else</span> <span class="st">"oct"</span><span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>            <span class="cf">assert</span> info.unit <span class="op">==</span> data_unit_expected</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>test_meg_eeg_data_handling()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Opening raw data file /Users/engemand/mne_data/MNE-testing-data/MEG/sample/sample_audvis_trunc_raw.fif...
+    Read a total of 4 projection items:
+        PCA-v1 (1 x 102)  idle
+        PCA-v2 (1 x 102)  idle
+        PCA-v3 (1 x 102)  idle
+        Average EEG reference (1 x 60)  idle
+    Range : 12900 ... 18906 =     42.956 ...    62.955 secs
+Ready.
+Reading 0 ... 6006  =      0.000 ...    20.000 secs...
+Removing projector &lt;Projection | PCA-v1, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | PCA-v2, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | PCA-v3, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | Average EEG reference, active : False, n_channels : 60&gt;
+Removing projector &lt;Projection | Average EEG reference, active : False, n_channels : 60&gt;
+Removing projector &lt;Projection | PCA-v1, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | PCA-v2, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | PCA-v3, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | Average EEG reference, active : False, n_channels : 60&gt;
+Removing projector &lt;Projection | PCA-v1, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | PCA-v2, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | PCA-v3, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | Average EEG reference, active : False, n_channels : 60&gt;</code></pre>
+</div>
+</div>
+<div id="cell-26" class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_regularized_covariance():</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Test spectral features array-interface against Matlab implementation."</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    matlab_results <span class="op">=</span> get_matlab_results()</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    raw <span class="op">=</span> read_testing_data()</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    dat <span class="op">=</span> raw.get_data() <span class="op">*</span> <span class="fl">1e6</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    dat[:, <span class="dv">4999</span>:<span class="dv">5050</span>] <span class="op">=</span> np.nan</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    cfg1 <span class="op">=</span> <span class="bu">dict</span>(</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>        data<span class="op">=</span>dat,</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>        sfreq<span class="op">=</span>raw.info[<span class="st">'sfreq'</span>],</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>        bw_oct<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>        foi_start<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>        foi_end<span class="op">=</span><span class="dv">32</span>,</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>        window_shift<span class="op">=</span><span class="fl">0.25</span>,</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>        kernel_width<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>        allow_fraction_nan<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>        freq_shift_factor<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>        features<span class="op">=</span>(<span class="st">'cov'</span>, <span class="st">'cov_oas'</span>),</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>        density<span class="op">=</span><span class="st">'oct'</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    out1, info <span class="op">=</span> compute_spectral_features_array(<span class="op">**</span>cfg1)</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># short data, ill conditioned covariances ...</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="kw">not</span> <span class="bu">all</span>(pyriemann.utils.test.is_pos_def(C) <span class="cf">for</span> C <span class="kw">in</span> out1.cov.T)</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ... fixed by regularization</span></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">all</span>(pyriemann.utils.test.is_pos_def(C) <span class="cf">for</span> C <span class="kw">in</span> out1.cov_oas.T)</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test that regularization improves matrix rank (affected due to short signal).</span></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ii <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(info.foi)):</span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> np.linalg.matrix_rank(out1.cov[..., ii] <span class="op">&lt;</span> out1.cov_oas[..., ii])</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> np.linalg.matrix_rank(out1.cov_oas[..., ii]) <span class="op">==</span> dat.shape[<span class="dv">0</span>]</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>test_regularized_covariance()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Opening raw data file /Users/engemand/mne_data/MNE-testing-data/MEG/sample/sample_audvis_trunc_raw.fif...
+    Read a total of 4 projection items:
+        PCA-v1 (1 x 102)  idle
+        PCA-v2 (1 x 102)  idle
+        PCA-v3 (1 x 102)  idle
+        Average EEG reference (1 x 60)  idle
+    Range : 12900 ... 18906 =     42.956 ...    62.955 secs
+Ready.
+Removing projector &lt;Projection | PCA-v1, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | PCA-v2, active : False, n_channels : 102&gt;
+Removing projector &lt;Projection | PCA-v3, active : False, n_channels : 102&gt;
+Reading 0 ... 6006  =      0.000 ...    20.000 secs...</code></pre>
+</div>
+</div>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-bomatter2023" class="csl-entry" role="listitem">
+Bomatter, Philipp, Joseph Paillard, Pilar Garces, Joerg F Hipp, and Denis A Engemann. 2023. <span>“Machine Learning of Brain-Specific Biomarkers from EEG.”</span> <em>bioRxiv</em>.
+</div>
+<div id="ref-ewald2012estimating" class="csl-entry" role="listitem">
+Ewald, Arne, Laura Marzetti, Filippo Zappasodi, Frank C Meinecke, and Guido Nolte. 2012. <span>“Estimating True Brain Connectivity from EEG/MEG Data Invariant to Linear and Static Transformations in Sensor Space.”</span> <em>Neuroimage</em> 60 (1): 476–88.
+</div>
+<div id="ref-hipp2012large" class="csl-entry" role="listitem">
+Hipp, Joerg F, David J Hawellek, Maurizio Corbetta, Markus Siegel, and Andreas K Engel. 2012. <span>“Large-Scale Cortical Correlation Structure of Spontaneous Oscillatory Activity.”</span> <em>Nature Neuroscience</em> 15 (6): 884–90.
+</div>
+<div id="ref-lachaux1999" class="csl-entry" role="listitem">
+Lachaux, Jean-Philippe, Eugenio Rodriguez, Jacques Martinerie, and Francisco J. Varela. 1999. <span>“Measuring Phase Synchrony in Brain Signals.”</span> <em>Human Brain Mapping</em> 8 (4): 194–208.
+</div>
+<div id="ref-nolte2004identifying" class="csl-entry" role="listitem">
+Nolte, Guido, Ou Bai, Lewis Wheaton, Zoltan Mari, Sherry Vorbach, and Mark Hallett. 2004. <span>“Identifying True Brain Interaction from EEG Data Using the Imaginary Part of Coherency.”</span> <em>Clinical Neurophysiology</em> 115 (10): 2292–2307.
+</div>
+<div id="ref-stam2007phase" class="csl-entry" role="listitem">
+Stam, Cornelis J, Guido Nolte, and Andreas Daffertshofer. 2007. <span>“Phase Lag Index: Assessment of Functional Connectivity from Multi Channel EEG and MEG with Diminished Bias from Common Sources.”</span> <em>Human Brain Mapping</em> 28 (11): 1178–93.
+</div>
+<div id="ref-varela2001brainweb" class="csl-entry" role="listitem">
+Varela, Francisco, Jean-Philippe Lachaux, Eugenio Rodriguez, and Jacques Martinerie. 2001. <span>“The Brainweb: Phase Synchronization and Large-Scale Integration.”</span> <em>Nature Reviews Neuroscience</em> 2 (4): 229–39.
+</div>
+<div id="ref-vinck2011improved" class="csl-entry" role="listitem">
+Vinck, Martin, Robert Oostenveld, Marijn Van Wingerden, Franscesco Battaglia, and Cyriel MA Pennartz. 2011. <span>“An Improved Index of Phase-Synchronization for Electrophysiological Data in the Presence of Volume-Conduction, Noise and Sample-Size Bias.”</span> <em>Neuroimage</em> 55 (4): 1548–65.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Roche/neuro-meeglet/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

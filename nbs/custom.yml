@@ -1,0 +1,15 @@
+project:
+  type: website
+  output-dir: _docs
+  preview:
+    port: 3000
+    browser: false
+
+format:
+  html:
+    theme:
+      light: cerulean
+      dark: cyborg
+    css: styles.css
+    toc: true
+    toc-depth: 4

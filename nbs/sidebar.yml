@@ -1,0 +1,12 @@
+website:
+  sidebar:
+    contents:
+      - index.qmd
+      - section: Background
+        contents: background/*qmd
+      - section: Python tutorials
+        contents: tutorials/*ipynb
+      - section: Python API
+        contents: api/*.ipynb
+      - section: MATLAB
+        contents: matlab/*.ipynb

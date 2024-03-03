@@ -1,0 +1,29 @@
+name: meeglet
+channels:
+    - conda-forge
+    - defaults
+    - "conda-forge/label/cf201901"
+    - fastai
+    - numba
+dependencies:
+    - python=3.10
+    - pyriemann
+    - pandas
+    - pytest
+    - scipy
+    - matplotlib
+    - h5py
+    - joblib
+    - numba
+    - memory_profiler
+    - mne>=1.3
+    - pip
+    - nbdev
+    - nbdev-numpy
+    - nbdev-scipy
+    - nbdev-stdlib
+    - nbdev-pandas
+    - ipython
+    - jupyter
+    - jupyter-cache
+    - ipykernel

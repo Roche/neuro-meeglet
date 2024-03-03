@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Denis Engemann">
+<meta name="author" content="Jörg Hipp">
+
+<title>neuro-meeglet - MATLAB functionality</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="neuro-meeglet - MATLAB functionality">
+<meta property="og:description" content="Morlet Wavelets for M/EEG analysis">
+<meta property="og:site_name" content="neuro-meeglet">
+<meta name="twitter:title" content="neuro-meeglet - MATLAB functionality">
+<meta name="twitter:description" content="Morlet Wavelets for M/EEG analysis">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">neuro-meeglet</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/Roche/neuro-meeglet"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../matlab/index.html">MATLAB</a></li><li class="breadcrumb-item"><a href="../matlab/matlab_functions.html">MATLAB functionality</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MEEGLET</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../background/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Background</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../background/0_tour.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Onboarding</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../background/1_background_wavelets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematical Deep Dive</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../tutorials/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python tutorials</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/plot_eeg_covariance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EEG covariance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/plot_eeg_power.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EEG power</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/plot_wavelets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Define Wavelets</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../api/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python API</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../api/wavelets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Morlet Wavelets for M/EEG</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../matlab/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MATLAB</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../matlab/matlab_functions.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">MATLAB functionality</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#loading-the-matlab-functions." id="toc-loading-the-matlab-functions." class="nav-link active" data-scroll-target="#loading-the-matlab-functions.">Loading the matlab functions.</a></li>
+  <li><a href="#load-mne-samlpe-eeg-data" id="toc-load-mne-samlpe-eeg-data" class="nav-link" data-scroll-target="#load-mne-samlpe-eeg-data">load MNE samlpe EEG data</a></li>
+  <li><a href="#compute-power-from-morlet-wavelets" id="toc-compute-power-from-morlet-wavelets" class="nav-link" data-scroll-target="#compute-power-from-morlet-wavelets">Compute power from Morlet Wavelets</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Roche/neuro-meeglet/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../matlab/index.html">MATLAB</a></li><li class="breadcrumb-item"><a href="../matlab/matlab_functions.html">MATLAB functionality</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">MATLAB functionality</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-contents">
+             <p>Denis Engemann </p>
+             <p>Jörg Hipp </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>We perform the same computations using MATLAB.</p>
+<p>With a few exceptions, the arguments are named the same.</p>
+<p>The same default options are set.</p>
+<p>The examples below processes the MNE sample EEG data in MATLAB and then computes power spectra as in the <a href="../tutorials/plot_eeg_power.html">EEG power</a>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For building this example, you need the <a href="https://www.mathworks.com/products/reference-architectures/jupyter.html">Jupyter MATLAB proxy</a>. To make it work, closely follow the <a href="https://github.com/mathworks/jupyter-matlab-proxy?tab=readme-ov-file#requirements">GitHub</a>. In particular, make sure your Python and Jupyter versions are compatible and MATLAB is properly added to your path. A good test is trying the <code>Open MATLAB</code> from within Jupyter Lab.</p>
+<p>Moreover, we assume the <a href="https://github.com/mne-tools/mne-matlab">MNE-MATLAB</a> toolbox was added to the MATLAB path and the code is run from the root of the code repository.</p>
+<p>Finally, we assume Python is installed with MNE onboard.</p>
+</div>
+</div>
+<section id="loading-the-matlab-functions." class="level2">
+<h2 class="anchored" data-anchor-id="loading-the-matlab-functions.">Loading the matlab functions.</h2>
+<div id="c704ccf1-5581-47a9-9777-06e486f775e2" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">addpath</span>(<span class="ss">'./matlab'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="de94a0ab-87c4-40fd-ace4-a8b922c2f9f4" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="ss">'MATLAB version\n'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MATLAB version</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre>ans = '9.11.0.1809720 (R2021b) Update 1'</pre>
+</div>
+</div>
+</section>
+<section id="load-mne-samlpe-eeg-data" class="level2">
+<h2 class="anchored" data-anchor-id="load-mne-samlpe-eeg-data">load MNE samlpe EEG data</h2>
+<div id="3febb2db-23d9-42c1-a117-101a12ba1cb0" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>[<span class="va">status</span><span class="op">,</span> <span class="va">data_path</span>] <span class="op">=</span> <span class="va">system</span>(<span class="ss">'python -c "import mne; print(mne.datasets.sample.data_path(), end=str())"'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre>status = 0</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre>data_path = '/Users/engemand/mne_data/MNE-sample-data'</pre>
+</div>
+</div>
+<div id="283bbd68-7ddc-43c7-9ad0-cd03843d8c7d" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">fname</span> <span class="op">=</span> <span class="va">strcat</span>(<span class="va">data_path</span><span class="op">,</span> <span class="ss">'/MEG'</span><span class="op">,</span> <span class="ss">'/sample'</span><span class="op">,</span> <span class="ss">'/sample_audvis_raw.fif'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="023c9bc7-792a-45c4-ac6d-504050592687" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">raw</span> <span class="op">=</span> <span class="va">fiff_setup_read_raw</span>(<span class="va">fname</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Opening raw data file /Users/engemand/mne_data/MNE-sample-data/MEG/sample/sample_audvis_raw.fif...
+    Read a total of 3 projection items:
+        PCA-v1 (1 x 102) idle
+        PCA-v2 (1 x 102) idle
+        PCA-v3 (1 x 102) idle
+    Range : 25800 ... 192599  =     42.956 ...   320.670 secs
+Ready.</code></pre>
+</div>
+</div>
+<div id="5332698a-8788-4f03-8dd9-a892cbf185c9" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">picks_eeg</span> <span class="op">=</span> <span class="va">fiff_pick_types</span>(<span class="va">raw</span>.<span class="va">info</span><span class="op">,</span> <span class="fl">0</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">picks_eeg</span>(<span class="fl">53</span>) <span class="op">=</span> []<span class="op">;</span>  <span class="co">% flat channel EEG 53</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="67ac85e8-ebbe-4518-a8b9-95bcd8616b66" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>[<span class="va">data</span><span class="op">,</span> <span class="va">times</span>] <span class="op">=</span> <span class="va">fiff_read_raw_segment</span>(<span class="va">raw</span><span class="op">,</span> <span class="va">raw</span>.<span class="va">first_samp</span><span class="op">,</span> <span class="va">raw</span>.<span class="va">last_samp</span><span class="op">,</span> <span class="va">picks_eeg</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading 25800 ... 192599  =     42.956 ...   320.670 secs... [done]</code></pre>
+</div>
+</div>
+<div id="c4f3525c-d88c-4363-a2a6-2afca233d530" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">data</span> <span class="op">=</span> <span class="va">data</span> <span class="op">-</span> <span class="va">mean</span>(<span class="va">data</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">;</span>  <span class="co">%average ref for comparability with Python example</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="719568b6-2b61-4b3d-a18d-0c7b71575535" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="va">plot</span>(<span class="va">data</span>(<span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">,</span><span class="fl">1</span><span class="op">:</span><span class="fl">3000</span>)<span class="op">'</span> <span class="op">*</span> <span class="fl">1e6</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="va">set</span>(<span class="va">gcf</span><span class="op">,</span> <span class="ss">'Units'</span><span class="op">,</span> <span class="ss">'inches'</span>)<span class="op">;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="va">screenPosition</span> <span class="op">=</span> <span class="va">get</span>(<span class="va">gcf</span><span class="op">,</span> <span class="ss">'Position'</span>)<span class="op">;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="va">set</span>(<span class="va">gcf</span><span class="op">,</span> <span class="ss">'Position'</span><span class="op">,</span> [<span class="va">screenPosition</span>(<span class="fl">1</span>)<span class="op">,</span> <span class="va">screenPosition</span>(<span class="fl">2</span>)<span class="op">,</span> <span class="fl">8</span><span class="op">,</span> <span class="fl">4</span>])<span class="op">;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="va">ylabel</span>(<span class="ss">'EEG [${\mu V}$]'</span><span class="op">,</span> <span class="ss">'Interpreter'</span><span class="op">,</span><span class="ss">'latex'</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="va">xlabel</span>(<span class="ss">'Time [ms]'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="matlab_functions_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="compute-power-from-morlet-wavelets" class="level2">
+<h2 class="anchored" data-anchor-id="compute-power-from-morlet-wavelets">Compute power from Morlet Wavelets</h2>
+<div id="ca39bb11-39a5-4af7-bb73-db07ef274171" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="va">help</span>(<span class="st">"ro_freq_meeglet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  meeglet (ver 1.0)
+  Denis Engemann &amp; Jörg Hipp, Feb 2024
+ 
+  Log-spaced frequency transform using Morlet wavelets for continous
+  electrophysiological signals. Derive power, covariance and various
+  conncetivity metrics
+ 
+  % Input
+  - dat ... [channels x samples], set invalid data sections to NaN;
+            Input signal needs to have in µV
+  - cfg ... struct, see script itself for default parameters, cfg.fsample
+            has to be set by the user
+  
+  % Output
+  Metrics indicated in cfg.output (default: all)
+  Values returned as fields in struct out:
+  - foi .. frequencies for which below metrics are derived in Hz
+  - n .. number of time-windows used to compute below metrics
+  - cfg .. the cfg struct containing all parameters
+  - unit .. unit of the power spectral density (pow)
+  - pow .. Power spectrum. The total power in µV² for a channel (ich) over
+           the frequency range [cfg.f_start,cfg.f_end] can be derived as:
+           if cfg.density is 'linear'         -&gt; total_power = trapz(foi,pow(ich,:))
+           if cfg.density is 'log2' (default) -&gt; total_power = trapz(log2(foi),pow(ich,:))
+  - csd .. Cross-spectral density matrix
+  - cov .. Covariance matrix, same as real(csd)
+  - coh .. Coherence, compley values use coh.*conj(coh) to derive magnitude squared coherence
+  - icoh .. Imaginary coherence (Nolte et al., Clin Neurophys, 2004); 
+            function returns signed values, use abs(icoh) to be line with the original definition
+            is the same as the cross-sepectral density of the orthogonalized signal
+  - plv .. Phase-locking value (Lachaux et al., HBM, 1999)
+  - pli .. Phase lag index (Stam et al., HBM, 2007); function returns signed values,
+           use abs(pli) to be in line with the original definition;
+           is the same as the phase-locking value of the orthognalized signal.
+  - dwpli .. Debiased weighted phase lag index (Vinck et al., NeuroImage 2011)
+  - r_plain .. Power correlation
+  - r_orth .. Orthogonalized power correlation (Hipp et al., Nature Neurosci, 2012)
+  - gim .. Global interaction measure (Ewald et al., NeuroImage, 2012)
+ 
+  %% Example 1:
+  % Single channel with background noise and sine wave at 10 Hz
+  fsample = 250;
+  T = 60; % [s]
+  n_chan=1;
+  n_sample = T*fsample;
+  t=(0:n_sample-1)/fsample; % [s]
+  f = 10; % Hz
+  rng(0)
+  x=randn(n_chan,n_sample)*10+repmat(sin(2*pi*f*t)*10,[n_chan,1]); % [µV]
+  %
+  clear cfg
+  cfg.fsample = fsample;
+  cfg.delta_oct = 0.05;
+  cfg.foi_start = 0.1; % given parameterization cannot start at 0
+  cfg.foi_end = fsample/2;
+  cfg.density='Hz';
+  % µV²/Hz density
+  freq = ro_freq_meeglet(x,cfg);
+  figure('Color','w')
+  plot(freq.foi,freq.pow,'r')
+  xlabel('Frequency (Hz)'), ylabel(sprintf('%s',freq.unit))
+  % µV²/oct density
+  cfg.density='oct';
+  freq2 = ro_freq_meeglet(x,cfg);
+  %
+  % Test Parseval's theoreme, i.e. power should be identical in time and
+  % frequency domain (note: expected not to numerically match given the parameterization)
+  Pt = mean(x.^2,2);    % time domain; same as sum(x.^2*dt)/T, where dt=1/fsample, T=n_sample*dt
+  Pf_lin = sum(freq.pow(1:end-1).*diff(freq.foi)); % Frequency domain with linear frequency spaceing
+  Pf_log = sum(freq2.pow(1:end-1).*diff(log2(freq2.foi))); % Frequency domain with log frequency spaceing
+  fprintf('Power derived in time and frequency domains:\nPt = %.1f µV²\nPf_lin = %.1f µV²\nPf_log = %.1f µV²\n',Pt,Pf_lin,Pf_log)
+ 
+  %% Example 2:
+  % Artificial signal with background noise on 19 channels and two coherent sine-waves at two channels
+  fsample = 250; % [Hz]
+  T = 60; % [s]
+  n_chan = 19;
+  n_sample = T*fsample;
+  t=(0:n_sample-1)/fsample; % [s]
+  f = 10; % [Hz]
+  rng(0)
+  x=cumsum(randn(n_chan,n_sample),2); x=5*x./repmat(std(x,[],2),[1,size(x,2)]); % pink noise
+  x(1,:) = x(1,:)+sin(2*pi*f*t);
+  x(10,:) = x(10,:)+sin(2*pi*f*t+pi/4);
+  %
+  clear cfg
+  cfg.output={'pow','coh','icoh'};
+  cfg.fsample = fsample;
+  freq = ro_freq_meeglet(x,cfg);
+  %
+  figure('Color','w')
+  h=subplot(2,1,1); plot(log2(freq.foi),mean(freq.pow)), set(h,'XTick',log2(freq.foi(mod(log2(freq.foi),1)==0)),'XTickLabel',freq.foi(mod(log2(freq.foi),1)==0))
+  title('Power spetral density'), xlabel('Frequency [Hz]'), ylabel(freq.unit), a=axis; a(3)=0; axis(a)
+  subplot(2,2,3), imagesc(abs(freq.coh(:,:,20)),[0,1]), axis square, colorbar, title(sprintf('abs(COH), f=%.1fHz',freq.foi(20)))
+  subplot(2,2,4), imagesc(freq.icoh(:,:,20),[-1,1]), axis square, colorbar, title(sprintf('iCOH, f=%.1fHz',freq.foi(20)))
+</code></pre>
+</div>
+</div>
+<div id="48783e5a-5aee-43c3-a965-b3da86fccdcd" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="va">cfg</span>.<span class="va">fsample</span> <span class="op">=</span> <span class="va">raw</span>.<span class="va">info</span>.<span class="va">sfreq</span><span class="op">;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="va">cfg</span>.<span class="va">output</span> <span class="op">=</span> {<span class="ss">'pow'</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre>cfg = struct with fields:
+    fsample: 600.6150
+     output: {'pow'}
+</pre>
+</div>
+</div>
+<div id="f29f00de-c29f-4af2-98d4-400aaaee5239" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="va">out</span> <span class="op">=</span> <span class="va">ro_freq_meeglet</span>(<span class="va">data</span> <span class="op">*</span> <span class="fl">1e6</span><span class="op">,</span><span class="va">cfg</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Morlet wavelet transform [.................................] 8.1 sec</code></pre>
+</div>
+</div>
+<div id="ca6b9115-299a-4572-8a00-e8af36c4ed50" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="va">out</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre>out = struct with fields:
+           cfg: [1x1 struct]
+           foi: [2 2.1810 2.3784 2.5937 2.8284 3.0844 3.3636 3.6680 4 4.3620 4.7568 5.1874 5.6569 6.1688 6.7272 7.3360 8 8.7241 9.5137 10.3747 11.3137 12.3377 13.4543 14.6721 16 17.4481 19.0273 20.7494 22.6274 24.6754 26.9087 29.3441 32]
+           pow: [59x33 double]
+       pow_var: [59x33 double]
+          unit: 'µV²/oct'
+    pow_median: [59x33 double]
+       pow_geo: [59x33 double]
+             n: [402 439 479 523 570 621 677 741 806 879 961 1046 1139 1241 1353 1473 1616 1752 1914 2082 2281 2486 2687 2923 3204 3472 3787 4167 4505 4902 5377 5748 6412]
+            qt: 6.8624
+        bw_oct: 0.5000
+</pre>
+</div>
+</div>
+<p>Plot log power and on log frequency grid</p>
+<div id="2bb1fccd-6702-4207-ac72-a459d0feec89" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="va">log_foi</span> <span class="op">=</span> <span class="va">log2</span>(<span class="va">out</span>.<span class="va">foi</span>)<span class="op">;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="va">log_pow_db</span> <span class="op">=</span> <span class="fl">10</span> <span class="op">*</span> <span class="va">log10</span>(<span class="va">out</span>.<span class="va">pow</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="d989cf67-ff57-4c86-b67c-bc08dc6c9c3e" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="va">plot</span>(<span class="va">log_foi</span><span class="op">,</span> <span class="va">log_pow_db</span><span class="op">'</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="va">xlabel</span>(<span class="ss">'Frequency [Hz]'</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="va">xticks</span>([<span class="fl">1</span><span class="op">,</span> <span class="fl">2</span><span class="op">,</span> <span class="fl">3</span><span class="op">,</span> <span class="fl">4</span><span class="op">,</span> <span class="fl">5</span>])<span class="op">;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="va">xticklabels</span>([<span class="fl">2</span><span class="op">,</span> <span class="fl">4</span><span class="op">,</span> <span class="fl">8</span><span class="op">,</span> <span class="fl">16</span><span class="op">,</span> <span class="fl">32</span>])<span class="op">;</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="va">ylabel</span>(<span class="ss">'${10 \times \log_{10}(\mu V ^ 2 / oct)}$'</span><span class="op">,</span><span class="ss">'Interpreter'</span><span class="op">,</span><span class="ss">'Latex'</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="va">set</span>(<span class="va">gcf</span><span class="op">,</span> <span class="ss">'Units'</span><span class="op">,</span> <span class="ss">'inches'</span>)<span class="op">;</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="va">screenPosition</span> <span class="op">=</span> <span class="va">get</span>(<span class="va">gcf</span><span class="op">,</span> <span class="ss">'Position'</span>)<span class="op">;</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="va">set</span>(<span class="va">gcf</span><span class="op">,</span> <span class="ss">'Position'</span><span class="op">,</span> [<span class="va">screenPosition</span>(<span class="fl">1</span>)<span class="op">,</span> <span class="va">screenPosition</span>(<span class="fl">2</span>)<span class="op">,</span> <span class="fl">8</span><span class="op">,</span> <span class="fl">4</span>])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="matlab_functions_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Roche/neuro-meeglet/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
