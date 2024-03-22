@@ -1,7 +1,7 @@
 # MEEGLET
 > Morlet wavelets for M/EEG analysis, [ˈmiːglɪt]
 
-This package provides a lean implementation of Morlet wavelets [@morlet_wave_1982] *designed for power-spectral analysis of M/EEG resting-state signals* [@hipp2012large;@bomatter2023].
+This package provides a lean implementation of Morlet wavelets *designed for power-spectral analysis of M/EEG resting-state signals*.
 
 - Distinct [frequency-domain parametrization of Morlet wavelets](background/0_tour.html#power-spectral-density-in-units-of-µv²oct)
 - Established [spectral M/EEG metrics](background/0_tour.html#overview-on-implemented-meeg-spectral-metrics) share same wavelet convolutions
@@ -28,10 +28,10 @@ plt.gcf().set_size_inches(9, 3)
 ## Documentation
 |                         |                                                                      |
 |:------------------------|:---------------------------------------------------------------------|
-| [Background](background/index.html) | overview on scope, rationale & design choices            |
-| [Python tutorials](tutorials/index.html) | M/EEG data analysis examples                        |
-| [Python API](api/index.html) | Documentation of Python functions and unit tests                |
-| [MATLAB functionality](matlab/index.html) | MATLAB documentation and data analysis example     |
+| __Background__ | overview on scope, rationale & design choices                                 |
+| __Python tutorials__ | M/EEG data analysis examples                                            |
+| __Python API__ | Documentation of Python functions and unit tests                              |
+| __MATLAB functionality__ | MATLAB documentation and data analysis example                      |
 
 Use the left sidebar for navigating conveniently!
 
