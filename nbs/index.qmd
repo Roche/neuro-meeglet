@@ -1,5 +1,5 @@
 ---
-title:  MEEGLET
+title: MEEGLET
 format:
   html:
     code-fold: true
@@ -34,18 +34,18 @@ plt.gcf().set_size_inches(9, 3)
 ```
 
 ## Documentation
-|                         |                                                                      |
-|:------------------------|:---------------------------------------------------------------------|
-| [Background](background/index.html) | overview on scope, rationale & design choices            |
-| [Python tutorials](tutorials/index.html) | M/EEG data analysis examples                        |
-| [Python API](api/index.html) | Documentation of Python functions and unit tests               |
-| [MATLAB functionality](matlab/index.html) | MATLAB documentation and data analysis example     |
+|                                           |                                                  |
+|:------------------------------------------|:-------------------------------------------------|
+| [Background](background/index.html)       | overview on scope, rationale & design choices    |
+| [Python tutorials](tutorials/index.html)  | M/EEG data analysis examples                     |
+| [Python API](api/index.html)              | Documentation of Python functions and unit tests |
+| [MATLAB functionality](matlab/index.html) | MATLAB documentation and data analysis example   |
 
 Use the left sidebar for navigating conveniently!
 
 ## Installation
 
-## from PyPi
+### from PyPi
 
 In your environment of choice, use pip to install meeglet:
 
