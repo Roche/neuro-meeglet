@@ -3,10 +3,10 @@
 
 This package provides a lean implementation of Morlet wavelets *designed for power-spectral analysis of M/EEG resting-state signals*.
 
-- Distinct [frequency-domain parametrization of Morlet wavelets](background/0_tour.html#power-spectral-density-in-units-of-µv²oct)
-- Established [spectral M/EEG metrics](background/0_tour.html#overview-on-implemented-meeg-spectral-metrics) share same wavelet convolutions
-- Harmonized & tested [Python](api/wavelets.html) and [MATLAB](matlab/matlab_functions.html) implementation [(numerically equivalent)](./api/wavelets.html#more-unit-tests-and-validation)
-- Comprehensive [mathematical documentation](background/1_background_wavelets.html)
+- Distinct __frequency-domain parametrization of Morlet wavelets__
+- Established __spectral M/EEG metrics__ share same wavelet convolutions
+- Harmonized & tested __Python__ and __MATLAB__ implementation __numerically equivalent__
+- Comprehensive __mathematical documentation__
 
 
 ```python
@@ -26,12 +26,12 @@ plt.gcf().set_size_inches(9, 3)
 ```
 
 ## Documentation
-|                         |                                                                      |
-|:------------------------|:---------------------------------------------------------------------|
-| __Background__ | overview on scope, rationale & design choices                                 |
-| __Python tutorials__ | M/EEG data analysis examples                                            |
-| __Python API__ | Documentation of Python functions and unit tests                              |
-| __MATLAB functionality__ | MATLAB documentation and data analysis example                      |
+|                          |                                                  |
+|:-------------------------|:-------------------------------------------------|
+| __Background__           | overview on scope, rationale & design choices    |
+| __Python tutorials__     | M/EEG data analysis examples                     |
+| __Python API__           | Documentation of Python functions and unit tests |
+| __MATLAB functionality__ | MATLAB documentation and data analysis example   |
 
 Use the left sidebar for navigating conveniently!
 
