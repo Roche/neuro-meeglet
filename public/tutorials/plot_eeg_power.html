@@ -342,7 +342,7 @@ window.Quarto = {
 <p>Compute, plot and manipulate EEG power spectra using Morlet Wavelets</p>
 </blockquote>
 <p>In this example we will load the fmailiar MNE sample data and compute Morlet Wavelets.</p>
-<div id="cell-3" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-3" class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -356,7 +356,7 @@ window.Quarto = {
 <section id="load-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-data">Load data</h2>
 <p>Let’s read in the raw data and pick the EEG channel type</p>
-<div id="cell-5" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-5" class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_path <span class="op">=</span> sample.data_path()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> mne.io.read_raw_fif(data_path <span class="op">/</span> <span class="st">'MEG/sample/sample_audvis_raw.fif'</span>)</span>
@@ -461,7 +461,7 @@ window.Quarto = {
 <section id="compute-the-features-using-the-high-level-api-of-meeglet." class="level2">
 <h2 class="anchored" data-anchor-id="compute-the-features-using-the-high-level-api-of-meeglet.">Compute the features using the high-level API of meeglet.</h2>
 <p>This will return tow simple namespaces, one for the spectral features, one for the meta data.</p>
-<div id="cell-7" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-7" class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>features, info <span class="op">=</span> compute_spectral_features(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    raw, foi_start<span class="op">=</span><span class="dv">2</span>, foi_end<span class="op">=</span><span class="dv">32</span>, bw_oct<span class="op">=</span><span class="fl">0.5</span>, density<span class="op">=</span><span class="st">'Hz'</span>, features<span class="op">=</span><span class="st">'pow'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -472,12 +472,12 @@ window.Quarto = {
 <section id="power-spectrum-plot-2d-lines" class="level3">
 <h3 class="anchored" data-anchor-id="power-spectrum-plot-2d-lines">Power spectrum plot (2D lines)</h3>
 <p>Now we can readily make use of MNE’s plotting API. Let’s first plot data on a linear scale</p>
-<div id="cell-10" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-10" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>spectrum <span class="op">=</span> meeglet.spectrum_from_features(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    features.<span class="bu">pow</span>, info.foi, raw.info</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-11" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-11" class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>spectrum.plot(dB<span class="op">=</span><span class="va">True</span>, axes<span class="op">=</span>plt.gca())</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>fig.set_size_inches(<span class="dv">8</span>, <span class="dv">4</span>)<span class="op">;</span></span>
@@ -491,7 +491,7 @@ window.Quarto = {
 </div>
 </div>
 <p>Let’s update the output to log scale with base = 2. Note that for a base 10 logarithm, we could have simply used the <code>xscale</code> from the plot method. Some adjustments follow to reflect updated scaling</p>
-<div id="cell-13" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-13" class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>spectrum.plot(dB<span class="op">=</span><span class="va">True</span>, axes<span class="op">=</span>plt.gca())</span>
@@ -513,7 +513,7 @@ window.Quarto = {
 <section id="topographic-plots" class="level3">
 <h3 class="anchored" data-anchor-id="topographic-plots">Topographic plots</h3>
 <p>Using default settings, MNE will returns bands.</p>
-<div id="cell-15" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-15" class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>spectrum.plot_topomap(cmap<span class="op">=</span><span class="st">'viridis'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -524,16 +524,16 @@ window.Quarto = {
 </div>
 </div>
 <p>But we can simply pass frequency coordinates as tuples. Of note, due to the logarithmic frequency grid and the particular octave band width, one octave is reached every 8 indices if we use a band width of 0.5 and bw / 4 spaxcing (defaults).</p>
-<div id="cell-17" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-17" class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>info.foi[::<span class="dv">8</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre><code>array([ 2.,  4.,  8., 16., 32.])</code></pre>
 </div>
 </div>
-<div id="cell-18" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-18" class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>freqs <span class="op">=</span> info.foi[::<span class="dv">8</span>][<span class="dv">2</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-19" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-19" class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>spectrum.plot_topomap(<span class="bu">zip</span>(freqs, freqs), cmap<span class="op">=</span><span class="st">'viridis'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -544,7 +544,7 @@ window.Quarto = {
 </div>
 </div>
 <p>Finally, we can normalize the output, such that the total power adds up to one.</p>
-<div id="cell-21" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-21" class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>spectrum.plot_topomap(<span class="bu">zip</span>(freqs, freqs), cmap<span class="op">=</span><span class="st">'viridis'</span>, normalize<span class="op">=</span><span class="va">True</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -561,7 +561,7 @@ window.Quarto = {
 <section id="octave-scaling" class="level3">
 <h3 class="anchored" data-anchor-id="octave-scaling">Octave scaling</h3>
 <p>To take into account a-periodic dynamics, we can integrate over octaves, i.e.&nbsp;<span class="math inline">\(log_2(Hz)\)</span>. As a result, the 1/f will be mitigated.</p>
-<div id="cell-23" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-23" class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>features2, info <span class="op">=</span> compute_spectral_features(</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    raw, foi_start<span class="op">=</span><span class="dv">2</span>, foi_end<span class="op">=</span><span class="dv">32</span>, bw_oct<span class="op">=</span><span class="fl">0.5</span>, density<span class="op">=</span><span class="st">'oct'</span>, features<span class="op">=</span><span class="st">'pow'</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -571,7 +571,7 @@ window.Quarto = {
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    inst_info<span class="op">=</span>raw.info</span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-24" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-24" class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()<span class="op">;</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>spectrum_oct.plot(dB<span class="op">=</span><span class="va">True</span>, axes<span class="op">=</span>plt.gca())<span class="op">;</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>fig.set_size_inches(<span class="dv">8</span>,<span class="dv">4</span>)<span class="op">;</span></span>
@@ -593,7 +593,7 @@ window.Quarto = {
 <section id="frequency-shifting" class="level3">
 <h3 class="anchored" data-anchor-id="frequency-shifting">Frequency shifting</h3>
 <p>We can now explore shifting in log domain. We will apply a frequency shiftt to arbitrary reference=12Hz. Then we plot both results using the original frequency grid</p>
-<div id="cell-26" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-26" class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>reference <span class="op">=</span> <span class="dv">12</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>peak <span class="op">=</span> <span class="dv">8</span>  <span class="co"># we know this subject has an 8 Hz peak.</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>shift <span class="op">=</span> peak <span class="op">/</span> reference </span>
@@ -603,7 +603,7 @@ window.Quarto = {
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    features<span class="op">=</span><span class="st">'pow'</span>, freq_shift_factor<span class="op">=</span>shift</span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-27" class="cell" data-vscode="{&quot;languageId&quot;:&quot;python&quot;}">
+<div id="cell-27" class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plt.close(<span class="st">'all'</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>plt.ion()</span>

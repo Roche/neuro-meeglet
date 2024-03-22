@@ -45,16 +45,23 @@ Use the left sidebar for navigating conveniently!
 
 ## Installation
 
+## from PyPi
+
+In your environment of choice, use pip to install meeglet:
+
+```bash
+pip install meeglet
+```
+
+### from the sources
+
 Please clone the software, consider installing the dependencies listed in the \`environment.yml.
 
 Then do in your conda/mamba environment of choice:
 
 ``` bash
-
 pip install -e .
 ```
-
-Soon a Python package will be available on the PyPi.
 
 ## Citation
 

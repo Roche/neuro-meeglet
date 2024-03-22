@@ -323,10 +323,10 @@ Note
 </div>
 <section id="loading-the-matlab-functions." class="level2">
 <h2 class="anchored" data-anchor-id="loading-the-matlab-functions.">Loading the matlab functions.</h2>
-<div id="c704ccf1-5581-47a9-9777-06e486f775e2" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="c704ccf1-5581-47a9-9777-06e486f775e2" class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">addpath</span>(<span class="ss">'./matlab'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="de94a0ab-87c4-40fd-ace4-a8b922c2f9f4" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="de94a0ab-87c4-40fd-ace4-a8b922c2f9f4" class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="ss">'MATLAB version\n'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -339,7 +339,7 @@ Note
 </section>
 <section id="load-mne-samlpe-eeg-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-mne-samlpe-eeg-data">load MNE samlpe EEG data</h2>
-<div id="3febb2db-23d9-42c1-a117-101a12ba1cb0" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="3febb2db-23d9-42c1-a117-101a12ba1cb0" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>[<span class="va">status</span><span class="op">,</span> <span class="va">data_path</span>] <span class="op">=</span> <span class="va">system</span>(<span class="ss">'python -c "import mne; print(mne.datasets.sample.data_path(), end=str())"'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre>status = 0</pre>
@@ -348,10 +348,10 @@ Note
 <pre>data_path = '/Users/engemand/mne_data/MNE-sample-data'</pre>
 </div>
 </div>
-<div id="283bbd68-7ddc-43c7-9ad0-cd03843d8c7d" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="283bbd68-7ddc-43c7-9ad0-cd03843d8c7d" class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">fname</span> <span class="op">=</span> <span class="va">strcat</span>(<span class="va">data_path</span><span class="op">,</span> <span class="ss">'/MEG'</span><span class="op">,</span> <span class="ss">'/sample'</span><span class="op">,</span> <span class="ss">'/sample_audvis_raw.fif'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="023c9bc7-792a-45c4-ac6d-504050592687" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="023c9bc7-792a-45c4-ac6d-504050592687" class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">raw</span> <span class="op">=</span> <span class="va">fiff_setup_read_raw</span>(<span class="va">fname</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Opening raw data file /Users/engemand/mne_data/MNE-sample-data/MEG/sample/sample_audvis_raw.fif...
@@ -363,20 +363,20 @@ Note
 Ready.</code></pre>
 </div>
 </div>
-<div id="5332698a-8788-4f03-8dd9-a892cbf185c9" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="5332698a-8788-4f03-8dd9-a892cbf185c9" class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">picks_eeg</span> <span class="op">=</span> <span class="va">fiff_pick_types</span>(<span class="va">raw</span>.<span class="va">info</span><span class="op">,</span> <span class="fl">0</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">picks_eeg</span>(<span class="fl">53</span>) <span class="op">=</span> []<span class="op">;</span>  <span class="co">% flat channel EEG 53</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="67ac85e8-ebbe-4518-a8b9-95bcd8616b66" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="67ac85e8-ebbe-4518-a8b9-95bcd8616b66" class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>[<span class="va">data</span><span class="op">,</span> <span class="va">times</span>] <span class="op">=</span> <span class="va">fiff_read_raw_segment</span>(<span class="va">raw</span><span class="op">,</span> <span class="va">raw</span>.<span class="va">first_samp</span><span class="op">,</span> <span class="va">raw</span>.<span class="va">last_samp</span><span class="op">,</span> <span class="va">picks_eeg</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading 25800 ... 192599  =     42.956 ...   320.670 secs... [done]</code></pre>
 </div>
 </div>
-<div id="c4f3525c-d88c-4363-a2a6-2afca233d530" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="c4f3525c-d88c-4363-a2a6-2afca233d530" class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">data</span> <span class="op">=</span> <span class="va">data</span> <span class="op">-</span> <span class="va">mean</span>(<span class="va">data</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">;</span>  <span class="co">%average ref for comparability with Python example</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="719568b6-2b61-4b3d-a18d-0c7b71575535" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="719568b6-2b61-4b3d-a18d-0c7b71575535" class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="va">plot</span>(<span class="va">data</span>(<span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">,</span><span class="fl">1</span><span class="op">:</span><span class="fl">3000</span>)<span class="op">'</span> <span class="op">*</span> <span class="fl">1e6</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="va">set</span>(<span class="va">gcf</span><span class="op">,</span> <span class="ss">'Units'</span><span class="op">,</span> <span class="ss">'inches'</span>)<span class="op">;</span></span>
@@ -395,7 +395,7 @@ Ready.</code></pre>
 </section>
 <section id="compute-power-from-morlet-wavelets" class="level2">
 <h2 class="anchored" data-anchor-id="compute-power-from-morlet-wavelets">Compute power from Morlet Wavelets</h2>
-<div id="ca39bb11-39a5-4af7-bb73-db07ef274171" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="ca39bb11-39a5-4af7-bb73-db07ef274171" class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="va">help</span>(<span class="st">"ro_freq_meeglet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  meeglet (ver 1.0)
@@ -496,7 +496,7 @@ Ready.</code></pre>
 </code></pre>
 </div>
 </div>
-<div id="48783e5a-5aee-43c3-a965-b3da86fccdcd" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="48783e5a-5aee-43c3-a965-b3da86fccdcd" class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="va">cfg</span>.<span class="va">fsample</span> <span class="op">=</span> <span class="va">raw</span>.<span class="va">info</span>.<span class="va">sfreq</span><span class="op">;</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="va">cfg</span>.<span class="va">output</span> <span class="op">=</span> {<span class="ss">'pow'</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -506,13 +506,13 @@ Ready.</code></pre>
 </pre>
 </div>
 </div>
-<div id="f29f00de-c29f-4af2-98d4-400aaaee5239" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="f29f00de-c29f-4af2-98d4-400aaaee5239" class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="va">out</span> <span class="op">=</span> <span class="va">ro_freq_meeglet</span>(<span class="va">data</span> <span class="op">*</span> <span class="fl">1e6</span><span class="op">,</span><span class="va">cfg</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Morlet wavelet transform [.................................] 8.1 sec</code></pre>
 </div>
 </div>
-<div id="ca6b9115-299a-4572-8a00-e8af36c4ed50" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="ca6b9115-299a-4572-8a00-e8af36c4ed50" class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="va">out</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre>out = struct with fields:
@@ -530,11 +530,11 @@ Ready.</code></pre>
 </div>
 </div>
 <p>Plot log power and on log frequency grid</p>
-<div id="2bb1fccd-6702-4207-ac72-a459d0feec89" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="2bb1fccd-6702-4207-ac72-a459d0feec89" class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="va">log_foi</span> <span class="op">=</span> <span class="va">log2</span>(<span class="va">out</span>.<span class="va">foi</span>)<span class="op">;</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="va">log_pow_db</span> <span class="op">=</span> <span class="fl">10</span> <span class="op">*</span> <span class="va">log10</span>(<span class="va">out</span>.<span class="va">pow</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="d989cf67-ff57-4c86-b67c-bc08dc6c9c3e" class="cell" data-vscode="{&quot;languageId&quot;:&quot;matlab&quot;}">
+<div id="d989cf67-ff57-4c86-b67c-bc08dc6c9c3e" class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="va">plot</span>(<span class="va">log_foi</span><span class="op">,</span> <span class="va">log_pow_db</span><span class="op">'</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="va">xlabel</span>(<span class="ss">'Frequency [Hz]'</span>)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="va">xticks</span>([<span class="fl">1</span><span class="op">,</span> <span class="fl">2</span><span class="op">,</span> <span class="fl">3</span><span class="op">,</span> <span class="fl">4</span><span class="op">,</span> <span class="fl">5</span>])<span class="op">;</span></span>

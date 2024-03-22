@@ -368,7 +368,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="power-spectral-density-in-units-of-µv²oct">Power spectral density in units of µV²/oct</h2>
 <p>The implementation provides the power spectrum in units of <span class="math inline">\(µV^2/oct\)</span>. While this is an unusual normalization for power spectral density, it is a logical continuation embracing the logarithmic nature of electrophysiological signals and Jean Morlet’s work extending Gabor wavelets <span class="citation" data-cites="gabor1946theory">(<a href="#ref-gabor1946theory" role="doc-biblioref">Gabor 1946</a>)</span> into families of proportionial wavelets <span class="citation" data-cites="morlet_wave_1982">(<a href="#ref-morlet_wave_1982" role="doc-biblioref">Morlet et al. 1982</a>)</span>. It automatically leads to larger values at higher frequencies compared to the traditional <span class="math inline">\(µV^2/Hz\)</span> normalization, thereby accounting for lower amplitudes at higher frequencies.</p>
 <p>We therefore use a log-frequency grid with a wavelet design that increases spectral smoothing log-linearly with frequency. The implementation parameterizes spectral spacing and smoothing in units of <em>octaves</em> (<code>delta_oct</code> and <code>bw_oct</code>). We provide a python and a Matlab implementation. In the following we describe the python version.</p>
-<div id="26c18098" class="cell" data-execution_count="1">
+<div id="144069cb" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -383,7 +383,7 @@ window.Quarto = {
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The first step prepares frequencies of interest, <code>foi</code>, for which Morlet wavelets are constructed.</p>
-<div id="ebb40089" class="cell" data-execution_count="2">
+<div id="4e6eca69" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wavelets  <span class="op">=</span> define_wavelets(foi, sigma_time, sfreq<span class="op">=</span><span class="dv">1000</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="bu">len</span>(wavelets), sharex<span class="op">=</span><span class="va">True</span>)</span>
@@ -410,7 +410,7 @@ window.Quarto = {
 </div>
 <p>The Morlet wavelets are widest in lower frequencies and shorter in higher frequencies. Note also that the <em>number of cycles</em> is constant across wavelets, which is in line with Jean Morlet’s original work <span class="citation" data-cites="morlet_wave_1982">(<a href="#ref-morlet_wave_1982" role="doc-biblioref">Morlet et al. 1982</a>)</span> as it is controlled by the <em>kernel width</em>.</p>
 <p>In addition, our Morlet wavelet family does not only have a log-linearly increasing spectral width and a log-linearly decreasing temporal width, but spacing between frequencies increases log-linearly, i.e., increasingly fewer wavelets are deployed at higher frequencies. The spectral distance between two wavelets, i.e.&nbsp;spacing, is expressed in <em>octaves</em>, hence, log-linear too. This is a natural choice and ensures efficient spectral sampling.</p>
-<div id="78b74a02" class="cell" data-execution_count="3">
+<div id="73872a4a" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>delta_foi <span class="op">=</span> np.c_[</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="op">**</span> (np.log2(foi) <span class="op">-</span> delta_oct <span class="op">/</span> <span class="dv">2</span>), </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="op">**</span> (np.log2(foi) <span class="op">+</span> delta_oct <span class="op">/</span> <span class="dv">2</span>)</span>

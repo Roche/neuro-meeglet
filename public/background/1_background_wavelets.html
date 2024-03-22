@@ -630,7 +630,7 @@ Note
 q=\frac{2^{bw}+2^{-bw}+2}{2^{bw}-2^{-bw}} \sqrt{2ln(2)}
 \tag{10}\]</span></span></p>
 <p>Applied, to our defaults of <span class="math inline">\(bw=0.5\)</span>, using the arithmetic mean, we find <span class="math inline">\(q=6.9\)</span>, which is close to the <span class="math inline">\(q=7\)</span> that is used in literature <span class="citation" data-cites="tallon1996stimulus">(<a href="#ref-tallon1996stimulus" role="doc-biblioref">Tallon-Baudry et al. 1996</a>)</span>.</p>
-<div id="1c6e566b" class="cell" data-execution_count="2">
+<div id="7b8db621" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bw2q(bw):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    L <span class="op">=</span> np.sqrt(<span class="dv">2</span><span class="op">*</span>np.log(<span class="dv">2</span>))</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="dv">2</span> <span class="op">**</span> bw <span class="op">+</span> <span class="dv">2</span> <span class="op">**</span> <span class="op">-</span> bw <span class="op">+</span> <span class="dv">2</span>) <span class="op">/</span> (<span class="dv">2</span> <span class="op">**</span> bw <span class="op">-</span> <span class="dv">2</span> <span class="op">**</span> <span class="op">-</span> bw) <span class="op">*</span> L</span>
@@ -674,7 +674,7 @@ Def: \lambda=\sqrt{2 ln(2)}
 <p><span id="eq-11"><span class="math display">\[
 bw = log_2\left( \pm\sqrt{\frac{\lambda^2}{(\lambda-q)^2}-\frac{\lambda+q}{\lambda-q}} - \frac{\lambda}{\lambda-q} \right)
 \tag{11}\]</span></span></p>
-<div id="719b1fed" class="cell" data-execution_count="3">
+<div id="0396c1f8" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> q2bw(q):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    L <span class="op">=</span> np.sqrt(<span class="dv">2</span><span class="op">*</span>np.log(<span class="dv">2</span>))</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.log2(</span>
