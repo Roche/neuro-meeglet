@@ -457,7 +457,7 @@ def compute_spectral_features(
     if isinstance(inst, BaseRaw):
         data = inst_copy_pick.get_data()
     elif isinstance(inst, BaseEpochs):
-        data = inst_copy_pick.get_data(copy=False)
+        data = inst_copy_pick.get_data()
     if isinstance(inst, BaseRaw) and nan_from_annotations:
         _set_nan_from_annotations_raw(inst, data, inst.annotations)
     elif isinstance(inst, BaseEpochs) and nan_from_annotations:
