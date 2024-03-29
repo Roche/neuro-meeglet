@@ -977,7 +977,7 @@ div.csl-indent {
 <pre><code> plot_wavelet_family (wavelets:list, foi:numpy.ndarray,
                       sampling_rate:float=1000.0, cmap:matplotlib.colors.C
                       olormap=&lt;matplotlib.colors.ListedColormap object at
-                      0x149626f50&gt;, f_scale:str='linear',
+                      0x141ee7190&gt;, f_scale:str='linear',
                       scale:Union[float,int]=4, fmin:Union[float,int]=0,
                       fmax:Union[float,int]=120)</code></pre>
 </blockquote>
@@ -1018,7 +1018,7 @@ div.csl-indent {
 <tr class="even">
 <td>cmap</td>
 <td>Colormap</td>
-<td>&lt;matplotlib.colors.ListedColormap object at 0x149626f50&gt;</td>
+<td>&lt;matplotlib.colors.ListedColormap object at 0x141ee7190&gt;</td>
 <td>Colormap.</td>
 </tr>
 <tr class="odd">
@@ -1244,47 +1244,166 @@ Reading 0 ... 6006  =      0.000 ...    20.000 secs...
 </div>
 <div id="cell-25" class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="at">@requires_testing_data</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_meg_eeg_data_handling():</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Test handling of appropriate input data"</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    fname <span class="op">=</span> (Path(mne.datasets.testing.data_path()) <span class="op">/</span> <span class="st">'MEG'</span> <span class="op">/</span> <span class="st">'sample'</span> <span class="op">/</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">'sample_audvis_trunc_raw.fif'</span>)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    raw <span class="op">=</span> mne.io.read_raw_fif(fname).load_data()</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    raw_no_meeg <span class="op">=</span> raw.copy().pick([<span class="st">'stim'</span>])</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test type handling: no relvant data</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pytest.raises(<span class="pp">ValueError</span>) <span class="im">as</span> excinfo:</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        out, info <span class="op">=</span> compute_spectral_features(raw_no_meeg)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="st">"Currently only supporting EEG or MEG data"</span> <span class="kw">in</span> <span class="bu">str</span>(excinfo.value)</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">del</span> raw_no_meeg</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test type handling: data types not unique</span></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    raw_grad_mag <span class="op">=</span> raw.copy().pick([<span class="st">'meg'</span>])</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> this_raw <span class="kw">in</span> (raw, raw_grad_mag):</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> pytest.raises(<span class="pp">ValueError</span>) <span class="im">as</span> excinfo:</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>            out, info <span class="op">=</span> compute_spectral_features(this_raw)</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> (<span class="st">'Currently only supporting unique sensor types at once. '</span></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>                <span class="st">'Please pick your data types.'</span>) <span class="kw">in</span> <span class="bu">str</span>(excinfo.value)</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">del</span> raw_grad_mag</span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test setting of correct units\</span></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> [raw.copy().pick([<span class="st">'eeg'</span>]),</span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>            raw.copy().pick([<span class="st">'mag'</span>]),</span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>            raw.copy().pick([<span class="st">'grad'</span>])]</span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> density <span class="kw">in</span> (<span class="st">'Hz'</span>, <span class="st">'oct'</span>):</span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> this_raw, data_type <span class="kw">in</span> <span class="bu">zip</span>(data, (<span class="st">'eeg'</span>, <span class="st">'mag'</span>, <span class="st">'grad'</span>)):</span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>            out, info <span class="op">=</span> compute_spectral_features(this_raw, density<span class="op">=</span>density)</span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>            data_unit <span class="op">=</span> <span class="st">''</span></span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="st">'eeg'</span> <span class="kw">in</span> this_raw:</span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>                data_unit <span class="op">=</span> <span class="st">'V'</span></span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> <span class="st">'mag'</span> <span class="kw">in</span> this_raw:</span>
-<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>                data_unit <span class="op">=</span> <span class="st">'T'</span></span>
-<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> <span class="st">'grad'</span> <span class="kw">in</span> this_raw:</span>
-<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>                data_unit <span class="op">=</span> <span class="st">'T/cm'</span></span>
-<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>            data_unit_expected <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>data_unit<span class="sc">}</span><span class="ss">²/</span><span class="sc">{</span><span class="st">"Hz"</span> <span class="cf">if</span> density <span class="op">==</span> <span class="st">"Hz"</span> <span class="cf">else</span> <span class="st">"oct"</span><span class="sc">}</span><span class="ss">'</span></span>
-<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>            <span class="cf">assert</span> info.unit <span class="op">==</span> data_unit_expected</span>
-<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>test_meg_eeg_data_handling()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_spectral_features():</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Test spectral features instance interface."</span>    </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    fname <span class="op">=</span> (</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        Path(mne.datasets.testing.data_path()) <span class="op">/</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'EDF'</span> <span class="op">/</span> </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'test_edf_overlapping_annotations.edf'</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    raw <span class="op">=</span> mne.io.read_raw_edf(fname).crop(<span class="dv">0</span>, <span class="dv">20</span>)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    cfg1 <span class="op">=</span> <span class="bu">dict</span>(</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        inst<span class="op">=</span>raw,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>        bw_oct<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>        foi_start<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        foi_end<span class="op">=</span><span class="dv">32</span>,</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>        window_shift<span class="op">=</span><span class="fl">0.25</span>,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        kernel_width<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>        allow_fraction_nan<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>        freq_shift_factor<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>        features<span class="op">=</span>(<span class="st">'pow'</span>, <span class="st">'csd'</span>, <span class="st">'cov'</span>),</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>        density<span class="op">=</span><span class="st">'Hz'</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test basic output shapes after internal channel picking</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> warnings.catch_warnings():</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>        warnings.simplefilter(<span class="st">"ignore"</span>, category<span class="op">=</span><span class="pp">RuntimeWarning</span>)</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>        raw.set_channel_types({raw.ch_names[<span class="dv">0</span>]: <span class="st">'misc'</span>})</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>    n_chan <span class="op">=</span> <span class="bu">len</span>(raw.ch_names) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>    out, info <span class="op">=</span> compute_spectral_features(<span class="op">**</span>cfg1)</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> out.<span class="bu">pow</span>.shape <span class="op">==</span> (n_chan, <span class="bu">len</span>(info.foi))</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> out.pow_median.shape <span class="op">==</span> (n_chan, <span class="bu">len</span>(info.foi))</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> out.pow_geo.shape <span class="op">==</span> (n_chan, <span class="bu">len</span>(info.foi))</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> out.pow_var.shape <span class="op">==</span> (n_chan, <span class="bu">len</span>(info.foi))</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> out.csd.shape <span class="op">==</span> (n_chan, n_chan, <span class="bu">len</span>(info.foi))</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> out.cov.shape <span class="op">==</span> (n_chan, n_chan, <span class="bu">len</span>(info.foi))</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test creating MNE spectrum object</span></span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>    spectrum <span class="op">=</span> spectrum_from_features(</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>        data<span class="op">=</span>out.<span class="bu">pow</span>,</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>        freqs<span class="op">=</span>info.foi,</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>        inst_info<span class="op">=</span>raw.info</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test setting nans from annotations</span></span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>    raw.annotations.append(onset<span class="op">=</span><span class="dv">1</span>, duration<span class="op">=</span><span class="dv">2</span>, description<span class="op">=</span><span class="st">'bad'</span>)</span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> raw.get_data()</span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.isnan(data).<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>    _set_nan_from_annotations_raw(raw, data, raw.annotations)</span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.isnan(data).<span class="bu">sum</span>() <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.isnan(data[:, raw.times <span class="op">&gt;</span> <span class="dv">3</span>]).<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.isnan(data[:, raw.times <span class="op">&lt;</span> <span class="dv">1</span>]).<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.<span class="bu">all</span>(np.isnan(data[:, (raw.times <span class="op">&gt;</span> <span class="dv">1</span>) <span class="op">&amp;</span></span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a>                                   (raw.times <span class="op">&lt;</span> <span class="dv">3</span>)]))</span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test that fewer samples are used when using NaNs from annotations</span></span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>    _, info_nan <span class="op">=</span> compute_spectral_features(raw, nan_from_annotations<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.<span class="bu">all</span>(info.n_valid_total <span class="op">&gt;</span> info_nan.n_valid_total)</span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test that annotations are taken into account</span></span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a>    epochs_no_reject <span class="op">=</span> mne.make_fixed_length_epochs(</span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a>        raw, duration<span class="op">=</span><span class="dv">10</span>, reject_by_annotation<span class="op">=</span><span class="va">False</span>).load_data()</span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a>    epochs_reject <span class="op">=</span> mne.make_fixed_length_epochs(</span>
+<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a>        raw, duration<span class="op">=</span><span class="dv">10</span>, reject_by_annotation<span class="op">=</span><span class="va">True</span>).load_data()</span>
+<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a>    cfg_ep1 <span class="op">=</span> <span class="bu">dict</span>(cfg1)</span>
+<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a>    cfg_ep1.update(inst<span class="op">=</span>epochs_no_reject, prepend_nan_epochs<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a>    cfg_ep2 <span class="op">=</span> <span class="bu">dict</span>(cfg1)</span>
+<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a>    cfg_ep2.update(inst<span class="op">=</span>epochs_reject, prepend_nan_epochs<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a>    out_ep1, info_ep1 <span class="op">=</span> compute_spectral_features(<span class="op">**</span>cfg_ep1)</span>
+<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a>    out_ep2, info_ep2 <span class="op">=</span> compute_spectral_features(<span class="op">**</span>cfg_ep2)</span>
+<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.<span class="bu">all</span>(info_ep1.n_valid_total <span class="op">&gt;</span> info_ep2.n_valid_total)</span>
+<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-75"><a href="#cb20-75" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test that segments are ignored when NaN is inserted at epoch boundary</span></span>
+<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a>    cfg_ep3 <span class="op">=</span> <span class="bu">dict</span>(cfg1)</span>
+<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a>    cfg_ep3.update(inst<span class="op">=</span>epochs_no_reject, prepend_nan_epochs<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a>    cfg_ep4 <span class="op">=</span> <span class="bu">dict</span>(cfg1)</span>
+<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a>    cfg_ep4.update(inst<span class="op">=</span>epochs_reject, prepend_nan_epochs<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-80"><a href="#cb20-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a>    out_ep3, info_ep3 <span class="op">=</span> compute_spectral_features(<span class="op">**</span>cfg_ep3)</span>
+<span id="cb20-82"><a href="#cb20-82" aria-hidden="true" tabindex="-1"></a>    out_ep4, info_ep4 <span class="op">=</span> compute_spectral_features(<span class="op">**</span>cfg_ep4)</span>
+<span id="cb20-83"><a href="#cb20-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-84"><a href="#cb20-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.<span class="bu">all</span>(info_ep3.n_valid_total <span class="op">&gt;</span> info_ep4.n_valid_total)</span>
+<span id="cb20-85"><a href="#cb20-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-86"><a href="#cb20-86" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test NaN annotations handling</span></span>
+<span id="cb20-87"><a href="#cb20-87" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb20-88"><a href="#cb20-88" aria-hidden="true" tabindex="-1"></a>        compute_spectral_features(epochs_no_reject, nan_from_annotations<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-89"><a href="#cb20-89" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> err:</span>
+<span id="cb20-90"><a href="#cb20-90" aria-hidden="true" tabindex="-1"></a>        error1 <span class="op">=</span> err</span>
+<span id="cb20-91"><a href="#cb20-91" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">isinstance</span>(error1, <span class="pp">ValueError</span>)</span>
+<span id="cb20-92"><a href="#cb20-92" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> ((<span class="st">'Converting bad annotations to NaN is only supported '</span></span>
+<span id="cb20-93"><a href="#cb20-93" aria-hidden="true" tabindex="-1"></a>             <span class="st">'for continous (raw) data'</span>) <span class="kw">in</span> <span class="bu">str</span>(error1))</span>
+<span id="cb20-94"><a href="#cb20-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-95"><a href="#cb20-95" aria-hidden="true" tabindex="-1"></a>test_spectral_features()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Extracting EDF parameters from /Users/engemand/mne_data/MNE-testing-data/EDF/test_edf_overlapping_annotations.edf...
+EDF file detected
+Setting channel info structure...
+Creating raw.info structure...
+Not setting metadata
+2 matching events found
+No baseline correction applied
+0 projection items activated
+Loading data for 2 events and 1280 original time points ...
+0 bad epochs dropped
+Not setting metadata
+2 matching events found
+No baseline correction applied
+0 projection items activated
+Loading data for 2 events and 1280 original time points ...
+1 bad epochs dropped</code></pre>
+</div>
+</div>
+<div id="cell-26" class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="at">@requires_testing_data</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_meg_eeg_data_handling():</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Test handling of appropriate input data"</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    fname <span class="op">=</span> (Path(mne.datasets.testing.data_path()) <span class="op">/</span> <span class="st">'MEG'</span> <span class="op">/</span> <span class="st">'sample'</span> <span class="op">/</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">'sample_audvis_trunc_raw.fif'</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    raw <span class="op">=</span> mne.io.read_raw_fif(fname).load_data()</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    raw_no_meeg <span class="op">=</span> raw.copy().pick([<span class="st">'stim'</span>])</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test type handling: no relvant data</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>        out, info <span class="op">=</span> compute_spectral_features(raw_no_meeg)</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> err:</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>        error1 <span class="op">=</span> err</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="st">"Currently only supporting EEG or MEG data"</span> <span class="kw">in</span> <span class="bu">str</span>(error1)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">del</span> raw_no_meeg</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># test type handling: data types not unique</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    raw_grad_mag <span class="op">=</span> raw.copy().pick([<span class="st">'meg'</span>])</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> this_raw <span class="kw">in</span> (raw, raw_grad_mag):</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>            out, info <span class="op">=</span> compute_spectral_features(this_raw)</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> err:</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>            error2 <span class="op">=</span> err</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> (<span class="st">'Currently only supporting unique sensor types at once. '</span></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>                <span class="st">'Please pick your data types.'</span>) <span class="kw">in</span> <span class="bu">str</span>(error2)</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">del</span> raw_grad_mag</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test setting of correct units\</span></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> [raw.copy().pick([<span class="st">'eeg'</span>]),</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>            raw.copy().pick([<span class="st">'mag'</span>]),</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>            raw.copy().pick([<span class="st">'grad'</span>])]</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> density <span class="kw">in</span> (<span class="st">'Hz'</span>, <span class="st">'oct'</span>):</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> this_raw, data_type <span class="kw">in</span> <span class="bu">zip</span>(data, (<span class="st">'eeg'</span>, <span class="st">'mag'</span>, <span class="st">'grad'</span>)):</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>            out, info <span class="op">=</span> compute_spectral_features(this_raw, density<span class="op">=</span>density)</span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>            data_unit <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="st">'eeg'</span> <span class="kw">in</span> this_raw:</span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>                data_unit <span class="op">=</span> <span class="st">'V'</span></span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> <span class="st">'mag'</span> <span class="kw">in</span> this_raw:</span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>                data_unit <span class="op">=</span> <span class="st">'T'</span></span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> <span class="st">'grad'</span> <span class="kw">in</span> this_raw:</span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>                data_unit <span class="op">=</span> <span class="st">'T/cm'</span></span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>            data_unit_expected <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>data_unit<span class="sc">}</span><span class="ss">²/</span><span class="sc">{</span><span class="st">"Hz"</span> <span class="cf">if</span> density <span class="op">==</span> <span class="st">"Hz"</span> <span class="cf">else</span> <span class="st">"oct"</span><span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>            <span class="cf">assert</span> info.unit <span class="op">==</span> data_unit_expected</span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a>test_meg_eeg_data_handling()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Opening raw data file /Users/engemand/mne_data/MNE-testing-data/MEG/sample/sample_audvis_trunc_raw.fif...
     Read a total of 4 projection items:
@@ -1310,40 +1429,50 @@ Removing projector &lt;Projection | PCA-v3, active : False, n_channels : 102&gt;
 Removing projector &lt;Projection | Average EEG reference, active : False, n_channels : 60&gt;</code></pre>
 </div>
 </div>
-<div id="cell-26" class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_regularized_covariance():</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Test spectral features array-interface against Matlab implementation."</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    matlab_results <span class="op">=</span> get_matlab_results()</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    raw <span class="op">=</span> read_testing_data()</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    dat <span class="op">=</span> raw.get_data() <span class="op">*</span> <span class="fl">1e6</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    dat[:, <span class="dv">4999</span>:<span class="dv">5050</span>] <span class="op">=</span> np.nan</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    cfg1 <span class="op">=</span> <span class="bu">dict</span>(</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>        data<span class="op">=</span>dat,</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>        sfreq<span class="op">=</span>raw.info[<span class="st">'sfreq'</span>],</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>        bw_oct<span class="op">=</span><span class="fl">0.5</span>,</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>        foi_start<span class="op">=</span><span class="dv">2</span>,</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>        foi_end<span class="op">=</span><span class="dv">32</span>,</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>        window_shift<span class="op">=</span><span class="fl">0.25</span>,</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>        kernel_width<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>        allow_fraction_nan<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>        freq_shift_factor<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>        features<span class="op">=</span>(<span class="st">'cov'</span>, <span class="st">'cov_oas'</span>),</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>        density<span class="op">=</span><span class="st">'oct'</span></span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    out1, info <span class="op">=</span> compute_spectral_features_array(<span class="op">**</span>cfg1)</span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># short data, ill conditioned covariances ...</span></span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="kw">not</span> <span class="bu">all</span>(pyriemann.utils.test.is_pos_def(C) <span class="cf">for</span> C <span class="kw">in</span> out1.cov.T)</span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ... fixed by regularization</span></span>
-<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">all</span>(pyriemann.utils.test.is_pos_def(C) <span class="cf">for</span> C <span class="kw">in</span> out1.cov_oas.T)</span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test that regularization improves matrix rank (affected due to short signal).</span></span>
-<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ii <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(info.foi)):</span>
-<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> np.linalg.matrix_rank(out1.cov[..., ii] <span class="op">&lt;</span> out1.cov_oas[..., ii])</span>
-<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> np.linalg.matrix_rank(out1.cov_oas[..., ii]) <span class="op">==</span> dat.shape[<span class="dv">0</span>]</span>
-<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>test_regularized_covariance()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-27" class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_pos_def(A):</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> np.array_equal(A, A.T):</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>            np.linalg.cholesky(A)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> np.linalg.LinAlgError:</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_regularized_covariance():</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Test spectral features array-interface against Matlab implementation."</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    matlab_results <span class="op">=</span> get_matlab_results()</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    raw <span class="op">=</span> read_testing_data()</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    dat <span class="op">=</span> raw.get_data() <span class="op">*</span> <span class="fl">1e6</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    dat[:, <span class="dv">4999</span>:<span class="dv">5050</span>] <span class="op">=</span> np.nan</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    cfg1 <span class="op">=</span> <span class="bu">dict</span>(</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>        data<span class="op">=</span>dat,</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>        sfreq<span class="op">=</span>raw.info[<span class="st">'sfreq'</span>],</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>        bw_oct<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>        foi_start<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>        foi_end<span class="op">=</span><span class="dv">32</span>,</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>        window_shift<span class="op">=</span><span class="fl">0.25</span>,</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>        kernel_width<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>        allow_fraction_nan<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>        freq_shift_factor<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>        features<span class="op">=</span>(<span class="st">'cov'</span>, <span class="st">'cov_oas'</span>),</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>        density<span class="op">=</span><span class="st">'oct'</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>    out1, info <span class="op">=</span> compute_spectral_features_array(<span class="op">**</span>cfg1)</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># short data, ill conditioned covariances ...</span></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="kw">not</span> <span class="bu">all</span>(is_pos_def(C) <span class="cf">for</span> C <span class="kw">in</span> out1.cov.T)</span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ... fixed by regularization</span></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">all</span>(is_pos_def(C) <span class="cf">for</span> C <span class="kw">in</span> out1.cov_oas.T)</span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test that regularization improves matrix rank (affected due to short signal).</span></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ii <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(info.foi)):</span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> np.linalg.matrix_rank(out1.cov[..., ii] <span class="op">&lt;</span> out1.cov_oas[..., ii])</span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> np.linalg.matrix_rank(out1.cov_oas[..., ii]) <span class="op">==</span> dat.shape[<span class="dv">0</span>]</span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>test_regularized_covariance()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Opening raw data file /Users/engemand/mne_data/MNE-testing-data/MEG/sample/sample_audvis_trunc_raw.fif...
     Read a total of 4 projection items:
