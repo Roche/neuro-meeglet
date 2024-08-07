@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://Roche.github.io/neuro-meeglet/tutorials/plot_eeg_power.html</loc>
-    <lastmod>2024-03-29T09:37:07.624Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Roche.github.io/neuro-meeglet/tutorials/plot_eeg_covariance.html</loc>
-    <lastmod>2024-03-29T09:37:07.583Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Roche.github.io/neuro-meeglet/api/index.html</loc>
-    <lastmod>2024-03-29T09:37:07.621Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Roche.github.io/neuro-meeglet/matlab/index.html</loc>
-    <lastmod>2024-03-29T09:37:07.587Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Roche.github.io/neuro-meeglet/index.html</loc>
-    <lastmod>2024-03-22T21:13:59.219Z</lastmod>
+    <loc>https://Roche.github.io/neuro-meeglet/background/0_tour.html</loc>
+    <lastmod>2024-08-07T08:16:16.455Z</lastmod>
   </url>
   <url>
     <loc>https://Roche.github.io/neuro-meeglet/background/1_background_wavelets.html</loc>
-    <lastmod>2024-03-21T14:00:23.249Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Roche.github.io/neuro-meeglet/background/0_tour.html</loc>
-    <lastmod>2024-03-22T15:11:37.509Z</lastmod>
+    <lastmod>2024-08-07T08:16:19.787Z</lastmod>
   </url>
   <url>
     <loc>https://Roche.github.io/neuro-meeglet/background/index.html</loc>
-    <lastmod>2024-03-29T09:37:07.554Z</lastmod>
+    <lastmod>2024-08-07T08:16:20.129Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Roche.github.io/neuro-meeglet/index.html</loc>
+    <lastmod>2024-08-07T08:16:23.837Z</lastmod>
   </url>
   <url>
     <loc>https://Roche.github.io/neuro-meeglet/matlab/matlab_functions.html</loc>
-    <lastmod>2024-03-29T09:37:07.571Z</lastmod>
+    <lastmod>2024-08-07T08:16:24.217Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Roche.github.io/neuro-meeglet/matlab/index.html</loc>
+    <lastmod>2024-08-07T08:16:24.509Z</lastmod>
   </url>
   <url>
     <loc>https://Roche.github.io/neuro-meeglet/api/wavelets.html</loc>
-    <lastmod>2024-03-29T09:53:41.159Z</lastmod>
+    <lastmod>2024-08-07T08:16:25.449Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Roche.github.io/neuro-meeglet/api/index.html</loc>
+    <lastmod>2024-08-07T08:16:25.768Z</lastmod>
   </url>
   <url>
     <loc>https://Roche.github.io/neuro-meeglet/tutorials/plot_wavelets.html</loc>
-    <lastmod>2024-03-29T09:37:07.618Z</lastmod>
+    <lastmod>2024-08-07T08:16:26.124Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Roche.github.io/neuro-meeglet/tutorials/plot_eeg_covariance.html</loc>
+    <lastmod>2024-08-07T08:16:26.603Z</lastmod>
   </url>
   <url>
     <loc>https://Roche.github.io/neuro-meeglet/tutorials/index.html</loc>
-    <lastmod>2024-03-29T09:37:07.627Z</lastmod>
+    <lastmod>2024-08-07T08:16:26.917Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Roche.github.io/neuro-meeglet/tutorials/plot_eeg_power.html</loc>
+    <lastmod>2024-08-07T08:16:27.378Z</lastmod>
   </url>
 </urlset>

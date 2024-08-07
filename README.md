@@ -62,16 +62,17 @@ When using our package, please cite our two reference articles:
 Python implementation and covariance computation.
 
 ``` bibtex
-@article {bomatter2023,
-    author = {Philipp Bomatter and Joseph Paillard and Pilar Garces and Joerg F Hipp and Denis A Engemann},
-    title = {Machine learning of brain-specific biomarkers from EEG},
-    elocation-id = {2023.12.15.571864},
-    year = {2023},
-    doi = {10.1101/2023.12.15.571864},
-    publisher = {Cold Spring Harbor Laboratory},
-    URL = {https://www.biorxiv.org/content/early/2023/12/21/2023.12.15.571864},
-    eprint = {https://www.biorxiv.org/content/early/2023/12/21/2023.12.15.571864.full.pdf},
-    journal = {bioRxiv}
+@article{bomatter2024,
+	author = {Bomatter, Philipp and Paillard, Joseph and Garces, Pilar and Hipp, J{\"o}rg and Engemann, Denis-Alexander},
+	title = {Machine learning of brain-specific biomarkers from EEG},
+	year = {2024},
+	journal = {eBioMedicine},
+	url = {https://doi.org/10.1016/j.ebiom.2024.105259},
+	date = {2024/08/05},
+	publisher = {Elsevier},
+	isbn = {2352-3964},
+	month = {2024/08/06},
+	volume = {106},
 }
 ```
 

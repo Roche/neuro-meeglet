@@ -5,10 +5,30 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3  # Check out the code
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+ # Specify your desired Python version
+      - name: Create Virtual Environment
+        run: python -m venv neuro-meeglet-venv
+      - name: Activate Virtual Environment
+        run: source neuro-meeglet-venv/bin/activate
       - name: Install Dependencies
+        run: pip install -r requirements.txt
+      - name: Check MNE Data Paths (Sample)
         run: |
-          pip install mne==1.3.1
-          python -c 'import mne; mne.datasets.sample.data_path(verbose=True)';
-          python -c 'import mne; mne.datasets.testing.data_path(verbose=True)';
+          python -c 'import mne; mne.datasets.sample.data_path(verbose=True)'
+          if [ $? -ne 0 ]; then
+            echo "Error: MNE sample data path not found!"
+            exit 1
+          fi
+      - name: Check MNE Data Paths (Testing)
+        run: |
+          python -c 'import mne; mne.datasets.testing.data_path(verbose=True)'
+          if [ $? -ne 0 ]; then
+            echo "Error: MNE testing data path not found!"
+            exit 1
+          fi
       - uses: fastai/workflows/nbdev-ci@master

@@ -99,7 +99,7 @@ plt.grid(True)
 
 - `pow`: power spectral density
 - `csd`: cross-spectral density
-- `cov`: covariance estimated from wavelet convolutons [@bomatter2023]
+- `cov`: covariance estimated from wavelet convolutons [@bomatter2024]
 
 ### Measures of phase interaction (mixed, coherence type)
 

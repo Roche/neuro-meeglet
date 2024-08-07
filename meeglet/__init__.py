@@ -9,8 +9,10 @@ __all__ = ['define_frequencies', 'define_wavelets', 'compute_spectral_features_a
 import warnings
 from types import SimpleNamespace
 from typing import Union, Optional
+from inspect import signature
 from math import nan, sqrt, log, log2, pi, ceil
 import cmath
+
 import numpy as np
 
 from mne.utils import logger, verbose
@@ -237,8 +239,9 @@ def _compute_spectral_features(data, wavelets, features, out, info,
 
         if 'cov' in features or 'cov_oas' in features:
             out.cov[:, :, i_foi] = np.real(out.csd[:, :, i_foi])
-
         if 'cov_oas' in features:
+            np.set_printoptions(precision=10, suppress=False, linewidth=100)
+
             out.cov_oas[:, :, i_foi] = out.cov[:, :, i_foi]
             # The following code is adapted from scikit-learn implementation of
             # Oracle Approximating Shrinkage (OAS) for covariance regularization.
@@ -257,7 +260,7 @@ def _compute_spectral_features(data, wavelets, features, out, info,
             shrunk_cov = (1.0 - shrinkage) * emp_cov
             shrunk_cov.flat[:: n_features + 1] += shrinkage * mu
             out.cov_oas[:, :, i_foi] = shrunk_cov
-
+ 
         # coherence measures
         if 'coh' in features or 'icoh' in features:
             csd = out.csd
@@ -457,7 +460,11 @@ def compute_spectral_features(
     if isinstance(inst, BaseRaw):
         data = inst_copy_pick.get_data()
     elif isinstance(inst, BaseEpochs):
-        data = inst_copy_pick.get_data()
+        # handle mne versions
+        kw_args = dict()
+        if 'copy' in signature(inst_copy_pick.get_data).parameters:
+            kw_args['copy'] = False
+        data = inst_copy_pick.get_data(**kw_args)
     if isinstance(inst, BaseRaw) and nan_from_annotations:
         _set_nan_from_annotations_raw(inst, data, inst.annotations)
     elif isinstance(inst, BaseEpochs) and nan_from_annotations:

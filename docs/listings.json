@@ -1,8 +1,9 @@
 [
   {
-    "listing": "/api/index.html",
+    "listing": "/background/index.html",
     "items": [
-      "/api/wavelets.html"
+      "/background/0_tour.html",
+      "/background/1_background_wavelets.html"
     ]
   },
   {
@@ -12,10 +13,9 @@
     ]
   },
   {
-    "listing": "/background/index.html",
+    "listing": "/api/index.html",
     "items": [
-      "/background/0_tour.html",
-      "/background/1_background_wavelets.html"
+      "/api/wavelets.html"
     ]
   },
   {

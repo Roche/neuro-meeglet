@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.3.361">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,7 +10,7 @@
 <meta name="author" content="Joseph Paillard">
 <meta name="author" content="Jörg Hipp">
 
-<title>neuro-meeglet - Mathematical Deep Dive</title>
+<title>meeglet - Mathematical Deep Dive</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -25,7 +25,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -61,7 +61,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -104,13 +103,7 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
+  "limit": 20,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -119,7 +112,6 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -129,51 +121,30 @@ div.csl-indent {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="neuro-meeglet - Mathematical Deep Dive">
-<meta property="og:description" content="Morlet Wavelets for M/EEG analysis">
-<meta property="og:site_name" content="neuro-meeglet">
-<meta name="twitter:title" content="neuro-meeglet - Mathematical Deep Dive">
-<meta name="twitter:description" content="Morlet Wavelets for M/EEG analysis">
-<meta name="twitter:card" content="summary">
+<meta property="og:title" content="meeglet - Mathematical Deep Dive">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://Roche.github.io/neuro-meeglet/background/1_background_wavelets_files/figure-html/fig-wavelet-output-1.png">
+<meta property="og:site-name" content="meeglet">
+<meta property="og:image:height" content="1319">
+<meta property="og:image:width" content="1420">
+<meta name="twitter:title" content="meeglet - Mathematical Deep Dive">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://Roche.github.io/neuro-meeglet/background/1_background_wavelets_files/figure-html/fig-wavelet-output-1.png">
+<meta name="twitter:image-height" content="1319">
+<meta name="twitter:image-width" content="1420">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
+      <div class="navbar-brand-container">
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">neuro-meeglet</span>
+    <span class="navbar-title">meeglet</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -183,32 +154,32 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/Roche/neuro-meeglet"> <i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/Roche/neuro-meeglet" rel="" target=""><i class="bi bi-github" role="img">
 </i> 
-<span class="menu-text"></span></a>
+ <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
+          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../background/index.html">Background</a></li><li class="breadcrumb-item"><a href="../background/1_background_wavelets.html">Mathematical Deep Dive</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../background/index.html">Background</a></li><li class="breadcrumb-item"><a href="../background/1_background_wavelets.html">Mathematical Deep Dive</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
     </div>
   </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -306,7 +277,7 @@ window.Quarto = {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -320,12 +291,12 @@ window.Quarto = {
   <li><a href="#relationship-between-the-bandwidth-in-octaves-and-the-characteristic-morlet-wavelet-parameter-q" id="toc-relationship-between-the-bandwidth-in-octaves-and-the-characteristic-morlet-wavelet-parameter-q" class="nav-link" data-scroll-target="#relationship-between-the-bandwidth-in-octaves-and-the-characteristic-morlet-wavelet-parameter-q">Relationship between the bandwidth in octaves and the characteristic Morlet wavelet parameter <span class="math inline">\(q\)</span></a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/Roche/neuro-meeglet/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Roche/neuro-meeglet/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../background/index.html">Background</a></li><li class="breadcrumb-item"><a href="../background/1_background_wavelets.html">Mathematical Deep Dive</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Mathematical Deep Dive</h1>
 </div>
@@ -348,9 +319,7 @@ window.Quarto = {
   </div>
   
 
-
 </header>
-
 
 <blockquote class="blockquote">
 <p>Definition and parameterization of Morlet wavelets</p>
@@ -385,9 +354,9 @@ Essential design choice
 <p>A key feature of our parameterization is to express the Gaussian taper in terms of its <em>spectral smoothing</em>, i.e., spectral bandwidth (<span class="math inline">\(bw\)</span>), logarithmically in units of <em>octaves</em> <span class="citation" data-cites="hipp2012large">(<a href="#ref-hipp2012large" role="doc-biblioref">Hipp et al. 2012</a>)</span>.</p>
 </div>
 </div>
-<p>Let’s consider an example of a Morlet wavelet with a center frequency of interest <span class="math inline">\(f=2 Hz\)</span> and a bandwidth of <span class="math inline">\(bw=0.5 oct\)</span>. The example Morlet wavelet is illustrated in <a href="#fig-wavelet" class="quarto-xref">Figure&nbsp;1</a>.</p>
-<div id="cell-fig-wavelet" class="cell" data-execution_count="1">
-<details class="code-fold">
+<p>Let’s consider an example of a Morlet wavelet with a center frequency of interest <span class="math inline">\(f=2 Hz\)</span> and a bandwidth of <span class="math inline">\(bw=0.5 oct\)</span>. The example Morlet wavelet is illustrated in <a href="#fig-wavelet">Figure&nbsp;1</a>.</p>
+<div class="cell" data-execution_count="1">
+<details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -520,14 +489,10 @@ Essential design choice
 <span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-wavelet" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-wavelet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="1_background_wavelets_files/figure-html/fig-wavelet-output-1.png" width="710" height="660" class="figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wavelet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Example Morlet wavelet in time and frequency domain (a.u., arbitrary units).
-</figcaption>
+<div id="fig-wavelet" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="1_background_wavelets_files/figure-html/fig-wavelet-output-1.png" width="710" height="660" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: Example Morlet wavelet in time and frequency domain (a.u., arbitrary units).</figcaption>
 </figure>
 </div>
 </div>
@@ -536,7 +501,7 @@ Figure&nbsp;1: Example Morlet wavelet in time and frequency domain (a.u., arbitr
 <section id="morlet-wavelet-parameterization" class="level3">
 <h3 class="anchored" data-anchor-id="morlet-wavelet-parameterization">Morlet wavelet parameterization</h3>
 <p>In our parameterization, we describe Morlet wavelets families by the spectral smoothing, i.e.&nbsp;spectral bandwidth (<span class="math inline">\(bw\)</span>). In the following, we detail, how the Morlet wavelets are derived for center frequencies <span class="math inline">\(f\)</span> .</p>
-<p>A bandpass filter, that a Morlet wavelet basically is, is described by the two edge frequencies, <span class="math inline">\(f_{min}\)</span> and <span class="math inline">\(f_{max}\)</span>, where the signal subjected to the filter is attenuated by 50% (see <a href="#fig-wavelet" class="quarto-xref">Figure&nbsp;1</a> panel B). We define the bandwidth of the filter as:</p>
+<p>A bandpass filter, that a Morlet wavelet basically is, is described by the two edge frequencies, <span class="math inline">\(f_{min}\)</span> and <span class="math inline">\(f_{max}\)</span>, where the signal subjected to the filter is attenuated by 50% (see <a href="#fig-wavelet">Figure&nbsp;1</a> panel B). We define the bandwidth of the filter as:</p>
 <p><span id="eq-1"><span class="math display">\[
 bw = log_2\left(\frac{f_{max}}{f_{min}}\right)
 \tag{1}\]</span></span></p>
@@ -607,7 +572,7 @@ W(t|f,\sigma_t(bw)) = A e^{-\left(\frac{t}{2\sigma_t}\right)^2}e^{i2\pi f t}
 <p><span id="eq-8"><span class="math display">\[
 q=f/\sigma_f
 \tag{8}\]</span></span></p>
-<p>From <a href="#eq-6" class="quarto-xref">Equation&nbsp;6</a> and <a href="#eq-8" class="quarto-xref">Equation&nbsp;8</a> follows:</p>
+<p>From <a href="#eq-6">Equation&nbsp;6</a> and <a href="#eq-8">Equation&nbsp;8</a> follows:</p>
 <p><span id="eq-9"><span class="math display">\[
 q=\frac{\sqrt{2ln(2)} 2 f}{\left(\frac{2f}{2^{-bw} + 1}-\frac{2f}{2^{bw} + 1}\right)}
 \tag{9}\]</span></span></p>
@@ -630,7 +595,7 @@ Note
 q=\frac{2^{bw}+2^{-bw}+2}{2^{bw}-2^{-bw}} \sqrt{2ln(2)}
 \tag{10}\]</span></span></p>
 <p>Applied, to our defaults of <span class="math inline">\(bw=0.5\)</span>, using the arithmetic mean, we find <span class="math inline">\(q=6.9\)</span>, which is close to the <span class="math inline">\(q=7\)</span> that is used in literature <span class="citation" data-cites="tallon1996stimulus">(<a href="#ref-tallon1996stimulus" role="doc-biblioref">Tallon-Baudry et al. 1996</a>)</span>.</p>
-<div id="b005f423" class="cell" data-execution_count="2">
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bw2q(bw):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    L <span class="op">=</span> np.sqrt(<span class="dv">2</span><span class="op">*</span>np.log(<span class="dv">2</span>))</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="dv">2</span> <span class="op">**</span> bw <span class="op">+</span> <span class="dv">2</span> <span class="op">**</span> <span class="op">-</span> bw <span class="op">+</span> <span class="dv">2</span>) <span class="op">/</span> (<span class="dv">2</span> <span class="op">**</span> bw <span class="op">-</span> <span class="dv">2</span> <span class="op">**</span> <span class="op">-</span> bw) <span class="op">*</span> L</span>
@@ -642,7 +607,7 @@ q=\frac{2^{bw}+2^{-bw}+2}{2^{bw}-2^{-bw}} \sqrt{2ln(2)}
 <pre><code>q(bw=0.50) = 6.86</code></pre>
 </div>
 </div>
-<p>With this we can also compute the bandwidth <span class="math inline">\(bw\)</span> from a given <span class="math inline">\(q\)</span> by inverting <a href="#eq-10" class="quarto-xref">Equation&nbsp;10</a>:</p>
+<p>With this we can also compute the bandwidth <span class="math inline">\(bw\)</span> from a given <span class="math inline">\(q\)</span> by inverting <a href="#eq-10">Equation&nbsp;10</a>:</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -674,7 +639,7 @@ Def: \lambda=\sqrt{2 ln(2)}
 <p><span id="eq-11"><span class="math display">\[
 bw = log_2\left( \pm\sqrt{\frac{\lambda^2}{(\lambda-q)^2}-\frac{\lambda+q}{\lambda-q}} - \frac{\lambda}{\lambda-q} \right)
 \tag{11}\]</span></span></p>
-<div id="c5892739" class="cell" data-execution_count="3">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> q2bw(q):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    L <span class="op">=</span> np.sqrt(<span class="dv">2</span><span class="op">*</span>np.log(<span class="dv">2</span>))</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.log2(</span>
@@ -687,9 +652,9 @@ bw = log_2\left( \pm\sqrt{\frac{\lambda^2}{(\lambda-q)^2}-\frac{\lambda+q}{\lamb
 <pre><code>bw(q=6.86) = 0.50</code></pre>
 </div>
 </div>
-<p>This allows us to plot the following relationship between our bandwidth the the classical <span class="math inline">\(q\)</span> parameter (see <a href="#fig-q-bw" class="quarto-xref">Figure&nbsp;2</a>).</p>
-<div id="cell-fig-q-bw" class="cell" data-execution_count="4">
-<details class="code-fold">
+<p>This allows us to plot the following relationship between our bandwidth the the classical <span class="math inline">\(q\)</span> parameter (see <a href="#fig-q-bw">Figure&nbsp;2</a>).</p>
+<div class="cell" data-execution_count="4">
+<details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> np.linspace(<span class="dv">4</span>, <span class="dv">20</span>, <span class="dv">1000</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>bw <span class="op">=</span> q2bw(q)</span>
@@ -701,14 +666,10 @@ bw = log_2\left( \pm\sqrt{\frac{\lambda^2}{(\lambda-q)^2}-\frac{\lambda+q}{\lamb
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-q-bw" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-q-bw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="1_background_wavelets_files/figure-html/fig-q-bw-output-1.png" width="589" height="431" class="figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-q-bw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Relationship between characteristic Morlet-wavelet parameter and bandwidth in octaves. Black lines indicate the mapping from our default bandwidth to <span class="math inline">\(q\)</span>.
-</figcaption>
+<div id="fig-q-bw" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="1_background_wavelets_files/figure-html/fig-q-bw-output-1.png" width="589" height="431" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: Relationship between characteristic Morlet-wavelet parameter and bandwidth in octaves. Black lines indicate the mapping from our default bandwidth to <span class="math inline">\(q\)</span>.</figcaption>
 </figure>
 </div>
 </div>
@@ -719,12 +680,12 @@ Figure&nbsp;2: Relationship between characteristic Morlet-wavelet parameter and 
 </section>
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-gabor1946theory" class="csl-entry" role="listitem">
 Gabor, Dennis. 1946. <span>“Theory of Communication. Part 1: The Analysis of Information.”</span> <em>Journal of the Institution of Electrical Engineers-Part III: Radio and Communication Engineering</em> 93 (26): 429–41.
 </div>
 <div id="ref-hipp2012large" class="csl-entry" role="listitem">
-Hipp, Joerg F, David J Hawellek, Maurizio Corbetta, Markus Siegel, and Andreas K Engel. 2012. <span>“Large-Scale Cortical Correlation Structure of Spontaneous Oscillatory Activity.”</span> <em>Nature Neuroscience</em> 15 (6): 884–90.
+Hipp, Joerg F, David J Hawellek, Maurizio Corbetta, Markus Siegel, and Andreas K Engel. 2012. <span>“Large-Scale Cortical Correlation Structure of Spontaneous Oscillatory Activity.”</span> <em>Nature Neuroscience</em> 15 (6): 884–90. <a href="https://www.nature.com/articles/nn.3101">https://www.nature.com/articles/nn.3101</a>.
 </div>
 <div id="ref-morlet_wave_1982" class="csl-entry" role="listitem">
 Morlet, J., G. Arens, E. Fourgeau, and D. Giard. 1982. <span>“Wave Propagation and Sampling Theory—<span>Part</span> <span>II</span>: <span>Sampling</span> Theory and Complex Waves.”</span> <em>GEOPHYSICS</em> 47 (2): 222–36. <a href="https://doi.org/10.1190/1.1441329">https://doi.org/10.1190/1.1441329</a>.
@@ -777,33 +738,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       } else {
         el.classList.add('notransition');
       }
-    }
-  }
-  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-    let newTheme = '';
-    if(darkModeDefault) {
-      newTheme = isAlternate ? baseTheme : alternateTheme;
-    } else {
-      newTheme = isAlternate ? alternateTheme : baseTheme;
-    }
-    const changeGiscusTheme = () => {
-      // From: https://github.com/giscus/giscus/issues/336
-      const sendMessage = (message) => {
-        const iframe = document.querySelector('iframe.giscus-frame');
-        if (!iframe) return;
-        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
-      }
-      sendMessage({
-        setConfig: {
-          theme: newTheme
-        }
-      });
-    }
-    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-    if (isGiscussLoaded) {
-      changeGiscusTheme();
     }
   }
   const toggleColorMode = (alternate) => {
@@ -872,15 +806,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  const darkModeDefault = false;
-  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  let localAlternateSentinel = 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
-    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -959,9 +891,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -971,17 +904,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -994,125 +918,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1156,7 +961,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1182,32 +986,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1271,5 +1049,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Roche/neuro-meeglet/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+</body></html>
